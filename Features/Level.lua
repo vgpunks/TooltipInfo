@@ -1,4 +1,4 @@
-if not TooltipDataProcessor.AddTooltipPostCall then return end
+if not TooltipDataProcessor.AddLinePreCall then return end
 
 local _G = _G
 local CreateColor = CreateColor
@@ -8,43 +8,35 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitEffectiveLevel = UnitEffectiveLevel
 local UnitLevel = UnitLevel
 
-local LEVEL1_FORMAT = "|cff%%s%%d|r"
-local LEVEL2_FORMAT = "|cff%%s%%d|r (%%d)"
+local LEVEL1_FORMAT = "|cff%s%d|r"
+local LEVEL2_FORMAT = "|cff%s%d|r (%d)"
 
 local PLAYER_PATTERN = "%(" .. PLAYER .. "%)"
 
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tooltip)
-	if tooltip:IsForbidden() then return end
+TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tooltip, lineData)
+    if tooltip:IsForbidden() then return end
     if tooltip ~= GameTooltip then return end
-
-    local _, unit = tooltip:GetUnit()
     
+    local _, unit = tooltip:GetUnit()
+
     if unit and UnitIsPlayer(unit) then
-		local difficulty = GetContentDifficultyCreatureForPlayer(unit)
+        local difficulty = GetContentDifficultyCreatureForPlayer(unit)
         local diffColor = GetDifficultyColor(difficulty)
 		local diffHexColor = CreateColor(diffColor.r, diffColor.g, diffColor.b, 1):GenerateHexColorNoAlpha()
 		local level, realLevel = UnitEffectiveLevel(unit), UnitLevel(unit)
-        local numLines = tooltip:NumLines()
-        for i = 2, numLines do
-			local line = _G["GameTooltipTextLeft" .. i]
-			if line then
-				local lineText = line:GetText()
-				if lineText and lineText:find(LEVEL) then
-					local levelText = level > 0 and level or "??"
+        if lineData.leftText:find(LEVEL) then
+            -- Removes the (Player) bit from the level line.
+            lineData.leftText = lineData.leftText:gsub(PLAYER_PATTERN, "")
 
-					if level < realLevel then
-						line:SetFormattedText(lineText:gsub(level, LEVEL2_FORMAT), diffHexColor, levelText, realLevel)
-					else
-						line:SetFormattedText(lineText:gsub(level, LEVEL1_FORMAT), diffHexColor, levelText)
-					end
+            local levelText = level > 0 and level or "??"
 
-					-- Removes the (Player) bit from the level line.
-					lineText = line:GetText()
-					line:SetText(lineText:gsub(PLAYER_PATTERN, ""))
+            if level < realLevel then
+                levelText = LEVEL2_FORMAT:format(diffHexColor, levelText, realLevel)
+            else
+                levelText = LEVEL1_FORMAT:format(diffHexColor, levelText)
+            end
 
-					break
-				end
-			end
-		end
+            lineData.leftText = lineData.leftText:gsub(level, levelText)
+        end
     end
 end)

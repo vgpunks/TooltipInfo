@@ -1,4 +1,4 @@
-if not TooltipDataProcessor.AddTooltipPostCall then return end
+if not TooltipDataProcessor.AddLinePreCall then return end
 
 local _G = _G
 local UnitIsPlayer = UnitIsPlayer
@@ -15,27 +15,20 @@ local function GetUnitReactionColor(unit)
     end
 end
 
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tooltip)
+TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tooltip, lineData)
     if tooltip:IsForbidden() then return end
     if tooltip ~= GameTooltip then return end
-
-    local _, unit = tooltip:GetUnit()
     
+    local _, unit = tooltip:GetUnit()
+
     if unit and UnitIsPlayer(unit) then
         local race = UnitRace(unit)
         if not race then
             return
         end
-        local numLines = tooltip:NumLines()
-        for i = 2, numLines do
-            local line = _G["GameTooltipTextLeft" .. i]
-            if line then
-                local lineText = line:GetText()
-                if lineText and lineText:find(race) then
-                    line:SetFormattedText(lineText:gsub(race, RACE_FORMAT), GetUnitReactionColor(unit), race)
-                    break
-                end
-            end
+        if lineData.leftText:find(race) then
+            lineData.leftText = lineData.leftText:gsub(race, RACE_FORMAT)
+            lineData.leftText = lineData.leftText:format(GetUnitReactionColor(unit), race)
         end
     end
 end)

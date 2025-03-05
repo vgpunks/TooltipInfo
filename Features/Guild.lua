@@ -1,15 +1,14 @@
-if not TooltipDataProcessor.AddTooltipPostCall then return end
+if not TooltipDataProcessor.AddLinePreCall then return end
 
 local _G = _G
 local UnitIsPlayer = UnitIsPlayer
 local GetGuildInfo = GetGuildInfo
 
-local GUILD_PATTERN = ".+"
-local GUILD_FORMAT = "|cff00ff10%%s|r |cff00ff10<%%s>|r"
+local GUILD_FORMAT = "|cff00ff10%s|r |cff00ff10<%s>|r"
 local GUILD_FULLNAME_FORMAT = "%s-%s"
 
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tooltip)
-	if tooltip:IsForbidden() then return end
+TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tooltip, lineData)
+    if tooltip:IsForbidden() then return end
     if tooltip ~= GameTooltip then return end
 
     local _, unit = tooltip:GetUnit()
@@ -19,23 +18,14 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tool
         if not guildName then
             return
         end
-        local numLines = tooltip:NumLines()
-        for i = 2, numLines do
-            local line = _G["GameTooltipTextLeft" .. i]
-            if line then
-                local lineText = line:GetText()
-                if lineText and lineText:find(guildName) then
-                    local guildFullName = guildName
+        if lineData.leftText:find(guildName) then
+            local guildFullName = guildName
 
-                    if guildRealm and IsShiftKeyDown() then
-                        guildFullName = GUILD_FULLNAME_FORMAT:format(guildName, guildRealm)
-                    end
-
-                    line:SetFormattedText(lineText:gsub(GUILD_PATTERN, GUILD_FORMAT), guildFullName, guildRankName)
-                    
-                    break
-                end
+            if guildRealm and IsShiftKeyDown() then
+                guildFullName = GUILD_FULLNAME_FORMAT:format(guildName, guildRealm)
             end
+
+            lineData.leftText = GUILD_FORMAT:format(guildFullName, guildRankName)
         end
     end
 end)
