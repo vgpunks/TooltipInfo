@@ -10,6 +10,16 @@ do
     GameTooltipStatusBar.TextString = text
 end
 
+local function CalculateHealthFactor(value, isHighHealth)
+    return isHighHealth and (1.0 - value) * 1.5 or (1.0 - (value * 2))
+end
+
+local function AdjustColorIntensity(colorValue, factor, isHighHealth)
+    dimmedColor = colorValue * (1 - factor)
+
+    return isHighHealth and (dimmedColor + colorValue * 0.7 * factor) or dimmedColor
+end
+
 GameTooltipStatusBar.capNumericDisplay = true
 GameTooltipStatusBar.forceShow = true
 GameTooltipStatusBar.lockShow = 0
@@ -44,12 +54,25 @@ GameTooltipStatusBar:HookScript("OnValueChanged", function(self, value)
   
     value = (value - min) / (max - min)
 
+    local isHighHealth = value > 0.5
+    local factor = CalculateHealthFactor(value, isHighHealth)
     local r, g, b = 0, 1, 0
-    if value > 0.5 then
-        r, g = (1.0 - value) * 2, 1.0
-    else
-        r, g= 1.0, value * 2
+    
+    if unit and UnitIsPlayer(unit) then
+        local _, classFilename = UnitClass(unit)
+        if classFilename then
+            local classColor = RAID_CLASS_COLORS[classFilename]
+            if classColor then
+                r, g, b = classColor.r, classColor.g, classColor.b
+            end
+        end
     end
+
+    r = AdjustColorIntensity(r, factor, isHighHealth)
+    g = AdjustColorIntensity(g, factor, isHighHealth)
+    b = AdjustColorIntensity(b, factor, isHighHealth)
+
+    r = isHighHealth and r or r + factor
 
     self:SetStatusBarColor(r, g, b)
 end)
