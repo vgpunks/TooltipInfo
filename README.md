@@ -6,11 +6,6 @@ TooltipInfo is a simple and opinionated addon designed to enrich your World of W
 
 ![Tooltip](Screenshots/Default.png)
 
-- **Anchors:** You can set the anchor to dynamic by typing `/tti anchor dynamic` which adjusts the anchor of the tooltip based on whether it's a unit or a frame:
-  - **For Units:** it anchors to the right of the unit.
-  - **For Frames:** it anchors to the default position, except in rare cases where the positioning may be adjusted.
-  - **To revert the anchor back to normal you can type:** `/tti anchor normal`. **Reloads the UI.**
-
 - **Guild:** Display the guild name and character rank.
 
 - **Honor Level:** Display the honor level of players.
