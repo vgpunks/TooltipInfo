@@ -18,6 +18,7 @@ Features\ItemSource.lua
 Features\Level.lua
 Features\Macro.lua
 Features\MythicScore.lua
+Features\Name.lua
 Features\Race.lua
 Features\RaidIcon.lua
 Features\StatusBar.lua
