@@ -44,10 +44,10 @@ GameTooltipStatusBar:HookScript("OnValueChanged", function(self, value)
     if(textString) then
         if value == 0 then
             self.TextString:Hide()
-        elseif unit then
-            value, max = UnitHealth(unit), UnitHealthMax(unit)
-            TextStatusBar.UpdateTextStringWithValues(self, textString, value, 0, max)
         else
+            if unit then
+                value, max = UnitHealth(unit), UnitHealthMax(unit)
+            end
             TextStatusBar.UpdateTextStringWithValues(self, textString, value, 0, max)
         end
     end
