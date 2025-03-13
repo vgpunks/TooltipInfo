@@ -14,6 +14,7 @@ Features\Class.lua
 Features\Guild.lua
 Features\HonorLevel.lua
 Features\ID.lua
+Features\ItemLevel.lua
 Features\ItemSource.lua
 Features\Level.lua
 Features\Macro.lua
