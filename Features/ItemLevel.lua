@@ -87,8 +87,8 @@ do
         return totalItemLevel > 0 and totalItemLevel / numSlots or 0
     end
 
+    local timerHandle = nil
     local lastInspectedGuid = nil
-    local lastInspectedTime = 0
     local frame = CreateFrame("Frame")
     frame:SetScript("OnEvent", function(self, event, guid)
         if event == "INSPECT_READY" then
@@ -103,40 +103,53 @@ do
         end
     end)
 
-    local function ReadyToInspect(guid)
-        local inspectionCooldown = GetTime() - lastInspectedTime
-        if lastInspectedGuid ~= guid and inspectionCooldown >= 2 then
-            lastInspectedGuid = guid
-            lastInspectedTime = GetTime()
-            return true
+    local function IsUnitInspectable(unit)
+        return CanInspect(unit) and UnitIsConnected(unit) and not UnitIsDeadOrGhost(unit)
+    end
+
+    local function StartInspect()
+        if IsUnitInspectable("mouseover") then
+            frame:RegisterEvent("INSPECT_READY")
+            NotifyInspect("mouseover")
         end
-        return false
+    end
+
+    local function InspectAsync(unit)
+        Player:ClearInspection()
+        if IsUnitInspectable(unit) then
+            timerHandle = C_Timer.NewTicker(2, StartInspect, 1)
+        end
+    end
+
+    function Player:InspectAverageItemLevel(unit)
+        local guid = UnitGUID(unit)
+        local avgItemLevel = ItemLevel:Get(guid)
+        if not avgItemLevel and lastInspectedGuid ~= guid then
+            lastInspectedGuid = guid
+            InspectAsync(unit)
+            avgItemLevel = 0
+        end
+        return avgItemLevel
+    end
+
+    function Player:ClearInspection()
+        if timerHandle then
+            timerHandle:Cancel()
+            timerHandle = nil
+        end
     end
 
     function Player:GetAverageItemLevel()
         local _, equipped = GetAverageItemLevel()
         return equipped or 0
     end
-
-    function Player:CanInspect(unit)
-        return CanInspect(unit) and UnitIsConnected(unit) and not UnitIsDeadOrGhost(unit)
-    end
-
-    function Player:TryGetUnitAverageItemLevel(unit)
-        local guid = UnitGUID(unit)
-        local avgItemLevel = ItemLevel:Get(guid)
-        if not avgItemLevel and ReadyToInspect(guid) then
-            frame:RegisterEvent("INSPECT_READY")
-            NotifyInspect(unit)
-            avgItemLevel = 0
-        end
-        return avgItemLevel
-    end
 end
 
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tooltip)
     if tooltip:IsForbidden() then return end
     if tooltip ~= GameTooltip then return end
+
+    Player:ClearInspection()
 
     local _, unit = tooltip:GetUnit()
 
@@ -145,8 +158,8 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tool
         
         if UnitIsUnit(unit, "player") then
             avgItemLevel = Player:GetAverageItemLevel()
-        elseif Player:CanInspect(unit) then
-            avgItemLevel = Player:TryGetUnitAverageItemLevel(unit)
+        else
+            avgItemLevel = Player:InspectAverageItemLevel(unit)
         end
         
         if avgItemLevel > 0 then
