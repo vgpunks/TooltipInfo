@@ -24,18 +24,18 @@ do
     local UNIT_ITEMLEVEL_CACHE = {}
     local UNIT_ITEMLEVEL_TIMESTAMP = {}
 
-    function ItemLevel:Cache(guid, itemLevel)
-        UNIT_ITEMLEVEL_CACHE[guid] = itemLevel
+    function ItemLevel:Cache(guid, avgItemLevel)
+        UNIT_ITEMLEVEL_CACHE[guid] = avgItemLevel
         UNIT_ITEMLEVEL_TIMESTAMP[guid] = GetTime()
     end
 
     function ItemLevel:Get(guid)
-        local itemLevel = UNIT_ITEMLEVEL_CACHE[guid]
+        local avgItemLevel = UNIT_ITEMLEVEL_CACHE[guid]
         local timestamp = UNIT_ITEMLEVEL_TIMESTAMP[guid]
         local elapsed = timestamp and (GetTime() - timestamp) or (CACHE_EXPIRATION_TIME + 1)
         
-        if itemLevel and elapsed <= CACHE_EXPIRATION_TIME then
-            return itemLevel  
+        if avgItemLevel and elapsed <= CACHE_EXPIRATION_TIME then
+            return avgItemLevel  
         end
     
         UNIT_ITEMLEVEL_CACHE[guid] = nil
