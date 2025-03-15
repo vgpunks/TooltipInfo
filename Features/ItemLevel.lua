@@ -15,7 +15,7 @@ local ClearInspectPlayer = ClearInspectPlayer
 local RoundToSignificantDigits = RoundToSignificantDigits
 local GetTime = GetTime
 
-local ITEM_LEVEL_FORMAT = NORMAL_FONT_COLOR:WrapTextInColorCode(STAT_AVERAGE_ITEM_LEVEL .. ":") .. " %d"
+local ITEM_LEVEL_LABEL = NORMAL_FONT_COLOR:WrapTextInColorCode(STAT_AVERAGE_ITEM_LEVEL .. ":")
 
 local ItemLevel = {}
 do
@@ -171,7 +171,7 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tool
         
         if avgItemLevel > 0 then
             avgItemLevel = RoundToSignificantDigits(avgItemLevel, 2)
-            tooltip:AddLine(ITEM_LEVEL_FORMAT:format(avgItemLevel), 1, 1, 1)
+            tooltip:AddDoubleLine(ITEM_LEVEL_LABEL, avgItemLevel, nil, nil, nil, 1, 1, 1)
         end
     end
 end)
