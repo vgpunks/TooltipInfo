@@ -17,6 +17,16 @@ local GetTime = GetTime
 
 local ITEM_LEVEL_LABEL = NORMAL_FONT_COLOR:WrapTextInColorCode(STAT_AVERAGE_ITEM_LEVEL .. ":")
 
+local function AddTooltipLine(avgItemLevel, refresh)
+    if avgItemLevel > 0 then
+        avgItemLevel = RoundToSignificantDigits(avgItemLevel, 2)
+        GameTooltip:AddDoubleLine(ITEM_LEVEL_LABEL, avgItemLevel, nil, nil, nil, 1, 1, 1)
+        if refresh then
+            GameTooltip:Show()
+        end
+    end
+end
+
 local ItemLevel = {}
 do
     local CACHE_EXPIRATION_TIME = 120
@@ -97,7 +107,7 @@ do
                 local avgItemLevel = GetUnitAverageItemLevel(lastInspectedUnit)
                 if avgItemLevel > 0 then
                     ItemLevel:Cache(guid, avgItemLevel)
-                    GameTooltip:Show()
+                    AddTooltipLine(avgItemLevel, true)
                 end
                 lastInspectedUnit = nil
                 lastInspectedGuid = nil
@@ -128,12 +138,11 @@ do
         lastInspectedUnit = unit
 
         local guid = UnitGUID(unit)
-        local avgItemLevel = ItemLevel:Get(guid)
+        local avgItemLevel = ItemLevel:Get(guid) or 0
 
-        if not avgItemLevel and lastInspectedGuid ~= guid then
+        if avgItemLevel == 0 and lastInspectedGuid ~= guid then
             lastInspectedGuid = guid
             InspectAsync(unit)
-            avgItemLevel = 0
         end
 
         return avgItemLevel
@@ -156,8 +165,6 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tool
     if tooltip:IsForbidden() then return end
     if tooltip ~= GameTooltip then return end
 
-    Player:ClearInspection()
-
     local _, unit = tooltip:GetUnit()
 
     if unit and UnitIsPlayer(unit) then
@@ -169,9 +176,8 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tool
             avgItemLevel = Player:InspectAverageItemLevel(unit)
         end
         
-        if avgItemLevel > 0 then
-            avgItemLevel = RoundToSignificantDigits(avgItemLevel, 2)
-            tooltip:AddDoubleLine(ITEM_LEVEL_LABEL, avgItemLevel, nil, nil, nil, 1, 1, 1)
-        end
+        AddTooltipLine(avgItemLevel)
+    else
+        Player:ClearInspection()
     end
 end)
