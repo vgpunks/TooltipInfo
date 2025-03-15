@@ -59,44 +59,6 @@ local Player = {}
 do
     local INV_SLOTS = {1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17}
 
-    local TWO_HANDED_WEAPONS = {
-        [Enum.ItemWeaponSubclass.Axe2H] = true,
-        [Enum.ItemWeaponSubclass.Mace2H] = true,
-        [Enum.ItemWeaponSubclass.Sword2H] = true,
-        [Enum.ItemWeaponSubclass.Polearm] = true,
-        [Enum.ItemWeaponSubclass.Staff] = true
-    }
-
-    local function IsTwoHandedWeapon(classID, subclassID)
-        return classID == Enum.ItemClass.Weapon and TWO_HANDED_WEAPONS[subclassID]
-    end
-
-    local function GetUnitAverageItemLevel(unit)
-        local totalItemLevel, numSlots = 0, 17
-        local mainHandKind, offHandKind = 0, 0
-
-        for _, slot in ipairs(INV_SLOTS) do
-            local itemLink = GetInventoryItemLink(unit, slot)
-            if itemLink then
-                local _, _, _, itemLevel, _, _, _, _, _, _, _, classID, subclassID = C_Item.GetItemInfo(itemLink)
-                if itemLevel then
-                    if slot == 16 then
-                        mainHandKind = IsTwoHandedWeapon(classID, subclassID) and 2 or 1
-                    elseif slot == 17 then
-                        offHandKind = IsTwoHandedWeapon(classID, subclassID) and 2 or 1
-                    end
-                    totalItemLevel = totalItemLevel + itemLevel
-                end
-            end
-        end
-
-        if mainHandKind == 2 and offHandKind == 0 or mainHandKind == 0 and offHandKind == 0 then
-            numSlots = 16
-        end
-
-        return totalItemLevel > 0 and totalItemLevel / numSlots or 0
-    end
-
     local timerHandle = nil
     local lastInspectedGuid = nil
     local lastInspectedUnit = nil
@@ -104,7 +66,7 @@ do
     frame:SetScript("OnEvent", function(self, event, guid)
         if event == "INSPECT_READY" then
             if lastInspectedUnit and UnitExists(lastInspectedUnit) and lastInspectedGuid == guid then
-                local avgItemLevel = GetUnitAverageItemLevel(lastInspectedUnit)
+                local avgItemLevel = C_PaperDollInfo.GetInspectItemLevel(lastInspectedUnit)
                 if avgItemLevel > 0 then
                     ItemLevel:Cache(guid, avgItemLevel)
                     AddTooltipLine(avgItemLevel, true)
@@ -175,7 +137,7 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tool
         elseif IsShiftKeyDown() then
             avgItemLevel = Player:InspectAverageItemLevel(unit)
         end
-        
+
         AddTooltipLine(avgItemLevel)
     else
         Player:ClearInspection()
