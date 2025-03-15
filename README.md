@@ -10,6 +10,9 @@ TooltipInfo is a simple and opinionated addon designed to enrich your World of W
 
 - **Honor Level:** Display the honor level of players.
 
+- **Item Level:** Display the average item level of a player.
+  - Hold the shift key and hover over the player for 2 sec. 
+
 - **Item Source:** Display the expansion name for items, indicating when they were introduced.
 
 - **Character Level:** Display the effective/actual level of characters.
