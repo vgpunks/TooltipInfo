@@ -89,15 +89,18 @@ do
 
     local timerHandle = nil
     local lastInspectedGuid = nil
+    local lastInspectedUnit = nil
     local frame = CreateFrame("Frame")
     frame:SetScript("OnEvent", function(self, event, guid)
         if event == "INSPECT_READY" then
-            if UnitIsPlayer("mouseover") and UnitGUID("mouseover") == guid then
-                local avgItemLevel = GetUnitAverageItemLevel("mouseover")
+            if lastInspectedUnit and UnitExists(lastInspectedUnit) and lastInspectedGuid == guid then
+                local avgItemLevel = GetUnitAverageItemLevel(lastInspectedUnit)
                 if avgItemLevel > 0 then
                     ItemLevel:Cache(guid, avgItemLevel)
                     GameTooltip:Show()
                 end
+                lastInspectedUnit = nil
+                lastInspectedGuid = nil
             end
             self:UnregisterEvent(event)
         end
@@ -108,9 +111,9 @@ do
     end
 
     local function StartInspect()
-        if IsUnitInspectable("mouseover") then
+        if lastInspectedUnit and IsUnitInspectable(lastInspectedUnit) then
             frame:RegisterEvent("INSPECT_READY")
-            NotifyInspect("mouseover")
+            NotifyInspect(lastInspectedUnit)
         end
     end
 
@@ -122,13 +125,17 @@ do
     end
 
     function Player:InspectAverageItemLevel(unit)
+        lastInspectedUnit = unit
+
         local guid = UnitGUID(unit)
         local avgItemLevel = ItemLevel:Get(guid)
+
         if not avgItemLevel and lastInspectedGuid ~= guid then
             lastInspectedGuid = guid
             InspectAsync(unit)
             avgItemLevel = 0
         end
+
         return avgItemLevel
     end
 
