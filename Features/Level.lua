@@ -13,13 +13,21 @@ local LEVEL2_FORMAT = "|cff%s%d|r (%d)"
 
 local PLAYER_PATTERN = "%(" .. PLAYER .. "%)"
 
+local lineNumber = 2
+
 TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tooltip, lineData)
     if tooltip:IsForbidden() then return end
     if tooltip ~= GameTooltip then return end
     
     local _, unit = tooltip:GetUnit()
 
-    if unit and UnitIsPlayer(unit) then
+    if lineNumber > tooltip:NumLines() then
+        lineNumber = 2
+    else
+        lineNumber = lineNumber + 1
+    end
+
+    if unit and UnitIsPlayer(unit) and lineNumber > 2 then
         local difficulty = GetContentDifficultyCreatureForPlayer(unit)
         local diffColor = GetDifficultyColor(difficulty)
 		local diffHexColor = CreateColor(diffColor.r, diffColor.g, diffColor.b, 1):GenerateHexColorNoAlpha()

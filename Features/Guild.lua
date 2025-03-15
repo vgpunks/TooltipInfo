@@ -7,13 +7,21 @@ local GetGuildInfo = GetGuildInfo
 local GUILD_FORMAT = "|cff00ff10%s|r |cff00ff10<%s>|r"
 local GUILD_FULLNAME_FORMAT = "%s-%s"
 
+local lineNumber = 2
+
 TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tooltip, lineData)
     if tooltip:IsForbidden() then return end
     if tooltip ~= GameTooltip then return end
 
     local _, unit = tooltip:GetUnit()
 
-    if unit and UnitIsPlayer(unit) then
+    if lineNumber > tooltip:NumLines() then
+        lineNumber = 2
+    else
+        lineNumber = lineNumber + 1
+    end
+
+    if unit and UnitIsPlayer(unit) and lineNumber == 2 then
         local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
         if not guildName then
             return

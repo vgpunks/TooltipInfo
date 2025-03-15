@@ -7,6 +7,8 @@ local UnitIsFriend = UnitIsFriend
 
 local RACE_FORMAT = "%%s%%s|r"
 
+local lineNumber = 2
+
 local function GetUnitReactionColor(unit)
     if UnitIsFriend(unit, "player") then
         return "|cff49ad4d"
@@ -21,7 +23,13 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tool
     
     local _, unit = tooltip:GetUnit()
 
-    if unit and UnitIsPlayer(unit) then
+    if lineNumber > tooltip:NumLines() then
+        lineNumber = 2
+    else
+        lineNumber = lineNumber + 1
+    end
+    
+    if unit and UnitIsPlayer(unit) and lineNumber > 2 then
         local race = UnitRace(unit)
         if not race then
             return
