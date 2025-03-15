@@ -21,7 +21,7 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tool
 		if honorLevel <= 0 or not localizedFaction then
             return
 		end
-        if lineData.leftText:find(localizedFaction) then
+        if lineData.leftText == localizedFaction then
             lineData.leftText = ""
             tooltip:AddDoubleLine(HONOR_LEVEL_LABEL, honorLevel, nil, nil, nil, 1, 1, 1)
         end
