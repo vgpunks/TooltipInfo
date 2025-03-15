@@ -47,7 +47,7 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tool
                     tooltip:AddLine(MYTHIC_PLUS_BEST_RUN_LABEL)
                     local mapName = C_ChallengeMode.GetMapUIInfo(challengeModeID)
                     if mapName then
-                        tooltip:AddDoubleLine(mapName, bestRun, color.r, color.g, color.b, color.r, color.g, color.b)
+                        tooltip:AddDoubleLine("  " .. mapName, bestRun, color.r, color.g, color.b, color.r, color.g, color.b)
                     end
                 end
             end
