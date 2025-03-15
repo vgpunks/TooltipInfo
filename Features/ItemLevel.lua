@@ -165,7 +165,7 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tool
         
         if UnitIsUnit(unit, "player") then
             avgItemLevel = Player:GetAverageItemLevel()
-        else
+        elseif IsShiftKeyDown() then
             avgItemLevel = Player:InspectAverageItemLevel(unit)
         end
         
