@@ -19,6 +19,9 @@ local SPELL_LABEL = "Spell ID"
 local AURA_LABEL = "Aura ID"
 local BATTLE_PET_LABEL = "Battle Pet ID"
 local QUEST_LABEL = "Quest ID"
+local MOUNT_LABEL = "Mount ID"
+local TOY_LABEL = "Toy ID"
+local CURRENCY_LABEL = "Currency ID"
 
 local ID_FORMAT = "|cffca3c3c<%s>|r %s"
 local LINK_PATTERN = ":(%w+)"
@@ -88,6 +91,50 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.UnitAura, function(
     end
 
     AddTooltipLine(tooltip, AURA_LABEL, auraID)
+end)
+
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Mount, function(tooltip, data)
+    if not IsShiftKeyDown() then return end
+    if tooltip:IsForbidden() then return end
+
+    local mountID = data and data.id
+
+    AddTooltipLine(tooltip, MOUNT_LABEL, mountID)
+end)
+
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.CompanionPet, function(tooltip, data)
+    if not IsShiftKeyDown() then return end
+    if tooltip:IsForbidden() then return end
+
+    local battlePetSpeciesID = data and data.id
+
+    if not battlePetSpeciesID then
+        local info = tooltip:GetPrimaryTooltipInfo()
+        if info and info.getterArgs then
+            local battlePetGuid = unpack(info.getterArgs)
+            battlePetSpeciesID = C_PetJournal.GetPetInfoByPetID(battlePetGuid)
+        end
+    end
+
+    AddTooltipLine(tooltip, BATTLE_PET_LABEL, battlePetSpeciesID)
+end)
+
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Toy, function(tooltip, data)
+    if not IsShiftKeyDown() then return end
+    if tooltip:IsForbidden() then return end
+
+    local toyID = data and data.id
+
+    AddTooltipLine(tooltip, TOY_LABEL, toyID)
+end)
+
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Currency, function(tooltip, data)
+    if not IsShiftKeyDown() then return end
+    if tooltip:IsForbidden() then return end
+
+    local currencyID = data and data.id
+
+    AddTooltipLine(tooltip, CURRENCY_LABEL, currencyID)
 end)
 
 hooksecurefunc("BattlePetToolTip_Show", function(battlePetSpeciesID)
