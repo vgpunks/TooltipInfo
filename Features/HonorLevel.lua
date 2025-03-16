@@ -1,10 +1,7 @@
-if not TooltipDataProcessor.AddLinePreCall then return end
-
 local UnitIsPlayer = UnitIsPlayer
 local UnitHonorLevel = UnitHonorLevel
 local UnitFactionGroup = UnitFactionGroup
 
-local _G = _G
 local HONOR_LEVEL_TOOLTIP = HONOR_LEVEL_TOOLTIP
 
 local HONOR_LEVEL_LABEL = HONOR_LEVEL_TOOLTIP:gsub(" %%d", ":")

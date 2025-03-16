@@ -1,5 +1,3 @@
-if not TooltipDataProcessor.AddLinePreCall then return end
-
 local ICON_LIST = ICON_LIST
 
 local UnitExists = UnitExists

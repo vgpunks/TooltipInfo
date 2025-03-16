@@ -1,5 +1,3 @@
-if not TooltipDataProcessor.AddTooltipPostCall then return end
-
 local GameTooltip = GameTooltip
 local UnitIsPlayer = UnitIsPlayer
 local UnitGUID = UnitGUID

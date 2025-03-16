@@ -1,5 +1,3 @@
-if not TooltipDataProcessor.AddTooltipPostCall then return end
-
 local UnitIsPlayer = UnitIsPlayer
 local GetPlayerMythicPlusRatingSummary = C_PlayerInfo.GetPlayerMythicPlusRatingSummary
 local GetDungeonScoreRarityColor = C_ChallengeMode and C_ChallengeMode.GetDungeonScoreRarityColor

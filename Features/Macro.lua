@@ -1,5 +1,3 @@
-if not TooltipDataProcessor.AddTooltipPostCall then return end
-
 local GetActionText = GetActionText
 
 local MACRO_FORMAT = "|cffca3c3c<Macro>|r %s"

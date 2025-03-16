@@ -1,6 +1,3 @@
-if not TooltipDataProcessor.AddLinePreCall then return end
-
-local _G = _G
 local CreateColor = CreateColor
 local GetContentDifficultyCreatureForPlayer = C_PlayerInfo.GetContentDifficultyCreatureForPlayer
 local GetDifficultyColor = GetDifficultyColor

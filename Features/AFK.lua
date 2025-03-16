@@ -1,5 +1,3 @@
-if not TooltipDataProcessor.AddLinePreCall then return end
-
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsAFK = UnitIsAFK
 local UnitIsDND = UnitIsDND

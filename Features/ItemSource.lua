@@ -1,9 +1,7 @@
-if not TooltipDataProcessor.AddTooltipPostCall then return end
-
 local GetDisplayedItem = TooltipUtil and TooltipUtil.GetDisplayedItem
+local GetItemInfo = GetItemInfo
 
 local _G = _G
-local GetItemInfo = GetItemInfo
 
 local LINK_PATTERN = ":(%w+)"
 local EXPAC_LABEL = HIGHLIGHT_FONT_COLOR:WrapTextInColorCode(SOURCE) .. " %s"

@@ -1,6 +1,3 @@
-if not TooltipDataProcessor.AddLinePreCall then return end
-
-local _G = _G
 local UnitIsPlayer = UnitIsPlayer
 local GetGuildInfo = GetGuildInfo
 

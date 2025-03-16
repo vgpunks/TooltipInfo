@@ -1,5 +1,3 @@
-if not TooltipDataProcessor.AddLinePreCall then return end
-
 local UnitIsPlayer = UnitIsPlayer
 
 TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.UnitName, function(tooltip, lineData)

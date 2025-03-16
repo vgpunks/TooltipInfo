@@ -1,5 +1,3 @@
-if not TooltipDataProcessor.AddTooltipPostCall then return end
-
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local TextStatusBar = CreateFromMixins(TextStatusBarMixin)
