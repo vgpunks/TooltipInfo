@@ -14,10 +14,30 @@ local QuestMapLogTitleButton_OnEnter = QuestMapLogTitleButton_OnEnter
 local _G = _G
 local ID = _G.ID
 
+local ITEM_LABEL = "Item ID"
+local SPELL_LABEL = "Spell ID"
+local AURA_LABEL = "Aura ID"
+local BATTLE_PET_LABEL = "Battle Pet ID"
+local QUEST_LABEL = "Quest ID"
+
 local ID_FORMAT = "|cffca3c3c<%s>|r %s"
 local LINK_PATTERN = ":(%w+)"
 
 local lastPrintedID
+
+local function AddTooltipLine(tooltip, label, id, refresh)
+    if tooltip and id then
+        if IsAltKeyDown() and lastPrintedID ~= id then
+            lastPrintedID = id
+            StaticPopup_Show("TOOLTIPINFO_COPY_ID", label, nil, id)
+        end
+        id = ID_FORMAT:format(ID, id)
+        tooltip:AddLine(id)
+        if refresh then
+            tooltip:Show()
+        end
+    end
+end
 
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, function(tooltip, data)
     if not IsShiftKeyDown() then return end
@@ -34,14 +54,7 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, function(tool
         end
     end
 
-    if itemID then
-        if IsAltKeyDown() and lastPrintedID ~= itemID then
-            lastPrintedID = itemID
-            print(itemID)
-        end
-        itemID = ID_FORMAT:format(ID, itemID)
-        tooltip:AddLine(itemID)
-    end
+    AddTooltipLine(tooltip, ITEM_LABEL, itemID)
 end)
 
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Spell, function(tooltip, data)
@@ -55,14 +68,7 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Spell, function(too
         spellID = select(2, tooltip:GetSpell())
     end
 
-    if spellID then
-        if IsAltKeyDown() and lastPrintedID ~= spellID then
-            lastPrintedID = spellID
-            print(spellID)
-        end
-        spellID = ID_FORMAT:format(ID, spellID)
-        tooltip:AddLine(spellID)
-    end
+    AddTooltipLine(tooltip, SPELL_LABEL, spellID)
 end)
 
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.UnitAura, function(tooltip, data)
@@ -81,29 +87,14 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.UnitAura, function(
         end
     end
 
-    if auraID then
-        if IsAltKeyDown() and lastPrintedID ~= auraID then
-            lastPrintedID = auraID
-            print(auraID)
-        end
-        auraID = ID_FORMAT:format(ID, auraID)
-        tooltip:AddLine(auraID)
-    end
+    AddTooltipLine(tooltip, AURA_LABEL, auraID)
 end)
 
 hooksecurefunc("BattlePetToolTip_Show", function(battlePetSpeciesID)
     if not IsShiftKeyDown() then return end
     if BattlePetTooltip:IsForbidden() then return end
 
-    if battlePetSpeciesID then
-        if IsAltKeyDown() and lastPrintedID ~= battlePetSpeciesID then
-            lastPrintedID = battlePetSpeciesID
-            print(battlePetSpeciesID)
-        end
-        battlePetSpeciesID = ID_FORMAT:format(ID, battlePetSpeciesID)
-        BattlePetTooltip:AddLine(battlePetSpeciesID)
-        BattlePetTooltip:Show()
-    end
+    AddTooltipLine(BattlePetTooltip, BATTLE_PET_LABEL, battlePetSpeciesID, true)
 end)
 
 hooksecurefunc("QuestMapLogTitleButton_OnEnter", function(frame)
@@ -112,15 +103,7 @@ hooksecurefunc("QuestMapLogTitleButton_OnEnter", function(frame)
 
     local questID = frame.questLogIndex and GetQuestIDForLogIndex(frame.questLogIndex)
     
-    if questID then
-        if IsAltKeyDown() and lastPrintedID ~= questID then
-            lastPrintedID = questID
-            print(questID)
-        end
-        questID = ID_FORMAT:format(ID, questID)
-        GameTooltip:AddLine(questID)
-        GameTooltip:Show()
-    end
+    AddTooltipLine(GameTooltip, QUEST_LABEL, questID, true)
 end)
 
 hooksecurefunc("TaskPOI_OnEnter", function(frame)
@@ -129,13 +112,5 @@ hooksecurefunc("TaskPOI_OnEnter", function(frame)
 
     local questID = frame.questID
 
-    if questID then
-        if IsAltKeyDown() and lastPrintedID ~= questID then
-            lastPrintedID = questID
-            print(questID)
-        end
-        questID = ID_FORMAT:format(ID, questID)
-        GameTooltip:AddLine(questID)
-        GameTooltip:Show()
-    end
+    AddTooltipLine(GameTooltip, QUEST_LABEL, questID, true)
 end)

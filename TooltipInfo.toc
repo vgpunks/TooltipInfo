@@ -9,6 +9,8 @@
 ## X-Curse-Project-ID: 965680
 ## X-Wago-ID: 96doenNO
 
+Core\StaticPopupDialogs.lua
+
 Features\AFK.lua
 Features\Class.lua
 Features\Guild.lua
