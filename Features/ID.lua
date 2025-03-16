@@ -1,10 +1,13 @@
-if not TooltipDataProcessor.AddTooltipPostCall then return end
-
 local select = select
+local print = print
 
 local IsShiftKeyDown = IsShiftKeyDown
+local IsAltKeyDown = IsAltKeyDown
 local GetDisplayedItem = TooltipUtil and TooltipUtil.GetDisplayedItem
 local GetAuraDataByIndex = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex
+local GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
+local BattlePetToolTip_Show = BattlePetToolTip_Show
+local QuestMapLogTitleButton_OnEnter = QuestMapLogTitleButton_OnEnter
 
 local _G = _G
 local ID = _G.ID
@@ -14,74 +17,131 @@ local LINK_PATTERN = ":(%w+)"
 
 local lastPrintedID
 
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, function(tooltip, data)
-	if not IsShiftKeyDown() then return end
-    if tooltip:IsForbidden() then return end
-    if tooltip ~= GameTooltip then return end
+if TooltipDataProcessor.AddTooltipPostCall then
+    TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, function(tooltip, data)
+        if not IsShiftKeyDown() then return end
+        if tooltip:IsForbidden() then return end
+        if tooltip ~= GameTooltip then return end
 
-    local itemID = data and data.id
+        local itemID = data and data.id
 
-    if not itemID then
-        local GetItem = GetDisplayedItem or tooltip.GetItem
-        if GetItem then
-            local _, link = GetItem(tooltip)
-            itemID = link:match(LINK_PATTERN)
+        if not itemID then
+            local GetItem = GetDisplayedItem or tooltip.GetItem
+            if GetItem then
+                local _, link = GetItem(tooltip)
+                itemID = link:match(LINK_PATTERN)
+            end
         end
-    end
 
-    if itemID then
-        if IsAltKeyDown() and lastPrintedID ~= itemID then
-            lastPrintedID = itemID
-            print(itemID)
+        if itemID then
+            if IsAltKeyDown() and lastPrintedID ~= itemID then
+                lastPrintedID = itemID
+                print(itemID)
+            end
+            itemID = ID_FORMAT:format(ID, itemID)
+            tooltip:AddLine(itemID)
         end
-        itemID = ID_FORMAT:format(ID, itemID)
-        tooltip:AddLine(itemID)
-    end
-end)
+    end)
 
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Spell, function(tooltip, data)
-	if not IsShiftKeyDown() then return end
-    if tooltip:IsForbidden() then return end
-    if tooltip ~= GameTooltip then return end
+    TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Spell, function(tooltip, data)
+        if not IsShiftKeyDown() then return end
+        if tooltip:IsForbidden() then return end
+        if tooltip ~= GameTooltip then return end
 
-    local spellID = data and data.id
+        local spellID = data and data.id
 
-    if not spellID then
-        spellID = select(2, tooltip:GetSpell())
-    end
-
-    if spellID then
-        if IsAltKeyDown() and lastPrintedID ~= spellID then
-            lastPrintedID = spellID
-            print(spellID)
+        if not spellID then
+            spellID = select(2, tooltip:GetSpell())
         end
-        spellID = ID_FORMAT:format(ID, spellID)
-        tooltip:AddLine(spellID)
-    end
-end)
 
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.UnitAura, function(tooltip, data)
-	if not IsShiftKeyDown() then return end
-    if tooltip:IsForbidden() then return end
-    if tooltip ~= GameTooltip then return end
-
-    local auraID = data and data.id
-
-    if not auraID then
-        local info = tooltip:GetPrimaryTooltipInfo()
-        if info and info.getterArgs then
-            local unit, index, filter = unpack(info.getterArgs)
-            local auraData = GetAuraDataByIndex(unit, index, filter)
-            auraID = auraData.spellId
+        if spellID then
+            if IsAltKeyDown() and lastPrintedID ~= spellID then
+                lastPrintedID = spellID
+                print(spellID)
+            end
+            spellID = ID_FORMAT:format(ID, spellID)
+            tooltip:AddLine(spellID)
         end
-    end
+    end)
 
-    if auraID then
-        if IsAltKeyDown() and lastPrintedID ~= auraID then
-            lastPrintedID = auraID
-            print(auraID)
+    TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.UnitAura, function(tooltip, data)
+        if not IsShiftKeyDown() then return end
+        if tooltip:IsForbidden() then return end
+        if tooltip ~= GameTooltip then return end
+
+        local auraID = data and data.id
+
+        if not auraID then
+            local info = tooltip:GetPrimaryTooltipInfo()
+            if info and info.getterArgs then
+                local unit, index, filter = unpack(info.getterArgs)
+                local auraData = GetAuraDataByIndex(unit, index, filter)
+                auraID = auraData.spellId
+            end
         end
-        auraID = ID_FORMAT:format(ID, auraID)
-        tooltip:AddLine(auraID)
-    end
-end)
+
+        if auraID then
+            if IsAltKeyDown() and lastPrintedID ~= auraID then
+                lastPrintedID = auraID
+                print(auraID)
+            end
+            auraID = ID_FORMAT:format(ID, auraID)
+            tooltip:AddLine(auraID)
+        end
+    end)
+end
+
+if BattlePetToolTip_Show then
+    hooksecurefunc("BattlePetToolTip_Show", function(battlePetSpeciesID)
+        if not IsShiftKeyDown() then return end
+        if BattlePetTooltip:IsForbidden() then return end
+
+        if battlePetSpeciesID then
+            if IsAltKeyDown() and lastPrintedID ~= battlePetSpeciesID then
+                lastPrintedID = battlePetSpeciesID
+                print(battlePetSpeciesID)
+            end
+            battlePetSpeciesID = ID_FORMAT:format(ID, battlePetSpeciesID)
+            BattlePetTooltip:AddLine(battlePetSpeciesID)
+            BattlePetTooltip:Show()
+        end
+    end)
+end
+
+if QuestMapLogTitleButton_OnEnter then
+    hooksecurefunc("QuestMapLogTitleButton_OnEnter", function(frame)
+        if not IsShiftKeyDown() then return end
+        if GameTooltip:IsForbidden() then return end
+
+        local questID = frame.questLogIndex and GetQuestIDForLogIndex(frame.questLogIndex)
+	    
+        if questID then
+            if IsAltKeyDown() and lastPrintedID ~= questID then
+                lastPrintedID = questID
+                print(questID)
+            end
+            questID = ID_FORMAT:format(ID, questID)
+            GameTooltip:AddLine(questID)
+            GameTooltip:Show()
+        end
+    end)
+end
+
+if TaskPOI_OnEnter then
+    hooksecurefunc("TaskPOI_OnEnter", function(frame)
+        if not IsShiftKeyDown() then return end
+        if GameTooltip:IsForbidden() then return end
+
+        local questID = frame.questID
+
+        if questID then
+            if IsAltKeyDown() and lastPrintedID ~= questID then
+                lastPrintedID = questID
+                print(questID)
+            end
+            questID = ID_FORMAT:format(ID, questID)
+            GameTooltip:AddLine(questID)
+            GameTooltip:Show()
+        end
+    end)
+end
