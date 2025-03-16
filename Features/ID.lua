@@ -12,6 +12,8 @@ local ID = _G.ID
 local ID_FORMAT = "|cffca3c3c<%s>|r %s"
 local LINK_PATTERN = ":(%w+)"
 
+local lastPrintedID
+
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, function(tooltip, data)
 	if not IsShiftKeyDown() then return end
     if tooltip:IsForbidden() then return end
@@ -28,6 +30,10 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, function(tool
     end
 
     if itemID then
+        if IsAltKeyDown() and lastPrintedID ~= itemID then
+            lastPrintedID = itemID
+            print(itemID)
+        end
         itemID = ID_FORMAT:format(ID, itemID)
         tooltip:AddLine(itemID)
     end
@@ -45,6 +51,10 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Spell, function(too
     end
 
     if spellID then
+        if IsAltKeyDown() and lastPrintedID ~= spellID then
+            lastPrintedID = spellID
+            print(spellID)
+        end
         spellID = ID_FORMAT:format(ID, spellID)
         tooltip:AddLine(spellID)
     end
@@ -67,6 +77,10 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.UnitAura, function(
     end
 
     if auraID then
+        if IsAltKeyDown() and lastPrintedID ~= auraID then
+            lastPrintedID = auraID
+            print(auraID)
+        end
         auraID = ID_FORMAT:format(ID, auraID)
         tooltip:AddLine(auraID)
     end
