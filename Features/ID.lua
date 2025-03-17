@@ -50,7 +50,7 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, function(tool
     local itemID = data and data.id
 
     if not itemID then
-        local GetItem = GetDisplayedItem or tooltip.GetItem
+        local GetItem = tooltip.GetItem
         if GetItem then
             local _, link = GetItem(tooltip)
             itemID = link:match(LINK_PATTERN)
