@@ -25,12 +25,9 @@ local CURRENCY_LABEL = "Currency ID"
 local ID_FORMAT = "|cffca3c3c<%s>|r %s"
 local LINK_PATTERN = ":(%w+)"
 
-local lastPrintedID
-
 local function AddTooltipLine(tooltip, label, id, refresh)
     if tooltip and id then
-        if IsAltKeyDown() and lastPrintedID ~= id then
-            lastPrintedID = id
+        if IsAltKeyDown() and not StaticPopup_Visible("TOOLTIPINFO_COPY_ID") then
             StaticPopup_Show("TOOLTIPINFO_COPY_ID", label, nil, id)
         end
         id = ID_FORMAT:format(ID, id)
@@ -42,7 +39,7 @@ local function AddTooltipLine(tooltip, label, id, refresh)
 end
 
 TooltipDataProcessor.AddTooltipPostCall(TooltipDataProcessor.AllTypes, function(tooltip, data)
-    if not IsShiftKeyDown() then return end
+    if not IsControlKeyDown() then return end
     if tooltip:IsForbidden() then return end
 
     local label = ID
@@ -93,14 +90,14 @@ TooltipDataProcessor.AddTooltipPostCall(TooltipDataProcessor.AllTypes, function(
 end)
 
 hooksecurefunc("BattlePetToolTip_Show", function(battlePetSpeciesID)
-    if not IsShiftKeyDown() then return end
+    if not IsControlKeyDown() then return end
     if BattlePetTooltip:IsForbidden() then return end
 
     AddTooltipLine(BattlePetTooltip, BATTLE_PET_LABEL, battlePetSpeciesID, true)
 end)
 
 hooksecurefunc("QuestMapLogTitleButton_OnEnter", function(frame)
-    if not IsShiftKeyDown() then return end
+    if not IsControlKeyDown() then return end
     if GameTooltip:IsForbidden() then return end
 
     local questID = frame.questLogIndex and GetQuestIDForLogIndex(frame.questLogIndex)
@@ -109,7 +106,7 @@ hooksecurefunc("QuestMapLogTitleButton_OnEnter", function(frame)
 end)
 
 hooksecurefunc("TaskPOI_OnEnter", function(frame)
-    if not IsShiftKeyDown() then return end
+    if not IsControlKeyDown() then return end
     if GameTooltip:IsForbidden() then return end
 
     local questID = frame.questID
