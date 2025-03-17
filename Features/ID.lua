@@ -1,5 +1,4 @@
 local select = select
-local print = print
 
 local GameTooltip = GameTooltip
 local BattlePetTooltip = BattlePetTooltip
@@ -42,99 +41,55 @@ local function AddTooltipLine(tooltip, label, id, refresh)
     end
 end
 
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, function(tooltip, data)
+TooltipDataProcessor.AddTooltipPostCall(TooltipDataProcessor.AllTypes, function(tooltip, data)
     if not IsShiftKeyDown() then return end
     if tooltip:IsForbidden() then return end
-    if tooltip ~= GameTooltip then return end
 
-    local itemID = data and data.id
+    local label = ID
+    local id = data and data.id
 
-    if not itemID then
-        local GetItem = tooltip.GetItem
-        if GetItem then
-            local _, link = GetItem(tooltip)
-            itemID = link:match(LINK_PATTERN)
+    if data.type == Enum.TooltipDataType.Item then
+        if not id then
+            local GetItem = tooltip.GetItem
+            if GetItem then
+                local _, link = GetItem(tooltip)
+                id = link:match(LINK_PATTERN)
+            end
         end
-    end
-
-    AddTooltipLine(tooltip, ITEM_LABEL, itemID)
-end)
-
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Spell, function(tooltip, data)
-    if not IsShiftKeyDown() then return end
-    if tooltip:IsForbidden() then return end
-    if tooltip ~= GameTooltip then return end
-
-    local spellID = data and data.id
-
-    if not spellID then
-        spellID = select(2, tooltip:GetSpell())
-    end
-
-    AddTooltipLine(tooltip, SPELL_LABEL, spellID)
-end)
-
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.UnitAura, function(tooltip, data)
-    if not IsShiftKeyDown() then return end
-    if tooltip:IsForbidden() then return end
-    if tooltip ~= GameTooltip then return end
-
-    local auraID = data and data.id
-
-    if not auraID then
-        local info = tooltip:GetPrimaryTooltipInfo()
-        if info and info.getterArgs then
-            local unit, index, filter = unpack(info.getterArgs)
-            local auraData = GetAuraDataByIndex(unit, index, filter)
-            auraID = auraData.spellId
+        label = ITEM_LABEL
+    elseif data.type == Enum.TooltipDataType.Spell then
+        if not id then
+            id = select(2, tooltip:GetSpell())
         end
-    end
-
-    AddTooltipLine(tooltip, AURA_LABEL, auraID)
-end)
-
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Mount, function(tooltip, data)
-    if not IsShiftKeyDown() then return end
-    if tooltip:IsForbidden() then return end
-
-    local mountID = data and data.id
-
-    AddTooltipLine(tooltip, MOUNT_LABEL, mountID)
-end)
-
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.CompanionPet, function(tooltip, data)
-    if not IsShiftKeyDown() then return end
-    if tooltip:IsForbidden() then return end
-
-    local battlePetSpeciesID = data and data.id
-
-    if not battlePetSpeciesID then
-        local info = tooltip:GetPrimaryTooltipInfo()
-        if info and info.getterArgs then
-            local battlePetGuid = unpack(info.getterArgs)
-            battlePetSpeciesID = C_PetJournal.GetPetInfoByPetID(battlePetGuid)
+        label = SPELL_LABEL
+    elseif data.type == Enum.TooltipDataType.UnitAura then
+        if not id then
+            local info = tooltip:GetPrimaryTooltipInfo()
+            if info and info.getterArgs then
+                local unit, index, filter = unpack(info.getterArgs)
+                local auraData = GetAuraDataByIndex(unit, index, filter)
+                id = auraData.spellId
+            end
         end
+        label = AURA_LABEL
+    elseif data.type == Enum.TooltipDataType.Mount then
+        label = MOUNT_LABEL
+    elseif data.type == Enum.TooltipDataType.CompanionPet then
+        if not id then
+            local info = tooltip:GetPrimaryTooltipInfo()
+            if info and info.getterArgs then
+                local battlePetGuid = unpack(info.getterArgs)
+                id = C_PetJournal.GetPetInfoByPetID(battlePetGuid)
+            end
+        end
+        label = BATTLE_PET_LABEL
+    elseif data.type == Enum.TooltipDataType.Toy then
+        label = TOY_LABEL
+    elseif data.type == Enum.TooltipDataType.Currency then
+        label = CURRENCY_LABEL
     end
 
-    AddTooltipLine(tooltip, BATTLE_PET_LABEL, battlePetSpeciesID)
-end)
-
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Toy, function(tooltip, data)
-    if not IsShiftKeyDown() then return end
-    if tooltip:IsForbidden() then return end
-
-    local toyID = data and data.id
-
-    AddTooltipLine(tooltip, TOY_LABEL, toyID)
-end)
-
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Currency, function(tooltip, data)
-    if not IsShiftKeyDown() then return end
-    if tooltip:IsForbidden() then return end
-
-    local currencyID = data and data.id
-
-    AddTooltipLine(tooltip, CURRENCY_LABEL, currencyID)
+    AddTooltipLine(tooltip, label, id)
 end)
 
 hooksecurefunc("BattlePetToolTip_Show", function(battlePetSpeciesID)
