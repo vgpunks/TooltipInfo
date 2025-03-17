@@ -10,13 +10,11 @@ TooltipInfo is a simple and opinionated addon designed to enrich your World of W
 
 - **Honor Level:** Display the honor level of players.
 
-- **Item Level:** Display the average item level of a player.
-  - Hold the shift key and hover over the player for 2 sec. 
+- **Item Level:** Display the average item level of a player. (Hold Shift and hover over the player for 2 sec.)
 
 - **Item Source:** Display the expansion name for items, indicating when they were introduced.
 
-- **Character Level:** Display the effective/actual level of characters.
-  - Can be useful for Timewalking Dungeons
+- **Character Level:** Display the effective/actual level of characters. (Useful for Timewalking Dungeons.)
 
 - **Mythic+:** Display Mythic+ rating and best run of characters.
 
@@ -34,11 +32,12 @@ TooltipInfo is a simple and opinionated addon designed to enrich your World of W
 
 ![Away](Screenshots/Away.png)
 
-### Hold Shift to reveal the ID of items
+### ID
+
+- Hold Ctrl to reveal the ID of items, spells, talents, auras, mounts, toys, pets and currency.
+- Hold Ctrl+Alt to copy the ID from the popup.
 
 ![SpellID](Screenshots/ItemID.png)
-
-### Hold Shift to reveal the ID of spells
 
 ![SpellID](Screenshots/SpellID_ActionBar.png)
 
@@ -46,15 +45,17 @@ TooltipInfo is a simple and opinionated addon designed to enrich your World of W
 
 ![SpellID](Screenshots/SpellID_Talents.png)
 
-### Hold Shift to reveal the ID of auras
-
 ![SpellID](Screenshots/AuraID.png)
 
-### Hold Shift to display the full name of macros
+### Macros Names
+
+- Hold Shift to display the full name of macros.
 
 ![Macro Name](Screenshots/MacroName.png)
 
-### Hold Shift to display the name of the Mythic+ dungeon
+### Mythic+
+
+- Hold Shift to display the name of the Mythic+ dungeon.
 
 ![Macro Name](Screenshots/MythicPlus.png)
 
