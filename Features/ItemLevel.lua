@@ -90,7 +90,7 @@ do
     local function InspectAsync(unit)
         Player:ClearInspection()
         if IsUnitInspectable(unit) then
-            timerHandle = C_Timer.NewTicker(2, StartInspect, 1)
+            timerHandle = C_Timer.NewTicker(0.5, StartInspect, 1)
         end
     end
 
