@@ -4,7 +4,7 @@ TooltipInfo is a simple and opinionated addon designed to enrich your World of W
 
 ## Features:
 
-![Tooltip](Screenshots/Default.png)
+![Tooltip](https://github.com/eyal-wow-addons/TooltipInfo/blob/main/Screenshots/Default.png?raw=true)
 
 - **Guild:** Display the guild name and character rank.
 
@@ -30,33 +30,33 @@ TooltipInfo is a simple and opinionated addon designed to enrich your World of W
 
 ### Display Away Status
 
-![Away](Screenshots/Away.png)
+![Away](https://github.com/eyal-wow-addons/TooltipInfo/blob/main/Screenshots/Away.png?raw=true)
 
 ### ID
 
 - Hold Ctrl to reveal the ID of items, spells, talents, auras, mounts, toys, pets and currency.
 - Hold Ctrl+Alt to copy the ID from the popup.
 
-![SpellID](Screenshots/ItemID.png)
+![SpellID](https://github.com/eyal-wow-addons/TooltipInfo/blob/main/Screenshots/ItemID.png?raw=true)
 
-![SpellID](Screenshots/SpellID_ActionBar.png)
+![SpellID](https://github.com/eyal-wow-addons/TooltipInfo/blob/main/Screenshots/SpellID_ActionBar.png?raw=true)
 
-![SpellID](Screenshots/SpellID_SpellBook.png)
+![SpellID](https://github.com/eyal-wow-addons/TooltipInfo/blob/main/Screenshots/SpellID_SpellBook.png?raw=true)
 
-![SpellID](Screenshots/SpellID_Talents.png)
+![SpellID](https://github.com/eyal-wow-addons/TooltipInfo/blob/main/Screenshots/SpellID_Talents.png?raw=true)
 
-![SpellID](Screenshots/AuraID.png)
+![SpellID](https://github.com/eyal-wow-addons/TooltipInfo/blob/main/Screenshots/AuraID.png?raw=true)
 
 ### Macros Names
 
 - Hold Shift to display the full name of macros.
 
-![Macro Name](Screenshots/MacroName.png)
+![Macro Name](https://github.com/eyal-wow-addons/TooltipInfo/blob/main/Screenshots/MacroName.png?raw=true)
 
 ### Mythic+
 
 - Hold Shift to display the name of the Mythic+ dungeon.
 
-![Macro Name](Screenshots/MythicPlus.png)
+![Macro Name](https://github.com/eyal-wow-addons/TooltipInfo/blob/main/Screenshots/MythicPlus.png?raw=true)
 
 ### Enjoy!
