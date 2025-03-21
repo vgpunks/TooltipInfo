@@ -21,6 +21,7 @@ local QUEST_LABEL = "Quest ID"
 local MOUNT_LABEL = "Mount ID"
 local TOY_LABEL = "Toy ID"
 local CURRENCY_LABEL = "Currency ID"
+local FACTION_LABEL = "Faction ID"
 
 local ID_FORMAT = "|cffca3c3c<%s>|r %s"
 local LINK_PATTERN = ":(%w+)"
@@ -113,3 +114,26 @@ hooksecurefunc("TaskPOI_OnEnter", function(frame)
 
     AddTooltipLine(GameTooltip, QUEST_LABEL, questID, true)
 end)
+
+do
+    local function ShowTooltipForReputationType(self)
+        if not self or not self.elementData then return end
+        if not IsControlKeyDown() then return end
+        if GameTooltip:IsForbidden() then return end
+        
+        AddTooltipLine(GameTooltip, FACTION_LABEL, self.elementData.factionID, true)
+    end
+
+    local function OnInitializedFrame(_, frame)
+        if frame.ShowTooltipForReputationType and not frame.__isHooked then
+            hooksecurefunc(frame, "ShowTooltipForReputationType", ShowTooltipForReputationType)
+            frame.__isHooked = true
+        end
+    end
+
+    ReputationFrame.ScrollBox.view:RegisterCallback(
+        ScrollBoxListViewMixin.Event.OnInitializedFrame, 
+        OnInitializedFrame)
+end
+
+
