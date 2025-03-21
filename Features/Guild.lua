@@ -12,11 +12,7 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tool
 
     local _, unit = tooltip:GetUnit()
 
-    if lineNumber > tooltip:NumLines() then
-        lineNumber = 2
-    else
-        lineNumber = lineNumber + 1
-    end
+    lineNumber = lineNumber > tooltip:NumLines() and 2 or lineNumber + 1
 
     if unit and UnitIsPlayer(unit) and lineNumber == 2 then
         local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
