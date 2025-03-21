@@ -25,7 +25,7 @@ TooltipInfo is a simple and opinionated addon designed to enrich your World of W
 
 ### ID
 
-*   Hold Ctrl to reveal the ID of items, spells, talents, auras, mounts, toys, pets and currency.
+*   Hold Ctrl to reveal the ID of items, spells, talents, auras, mounts, toys, pets, currency, reputation, quests and more... 
 *   Hold Ctrl+Alt to copy the ID from the popup.
 
 ![SpellID](https://github.com/eyal-wow-addons/TooltipInfo/blob/main/Screenshots/ItemID.png?raw=true)
