@@ -15,7 +15,7 @@ local GetTime = GetTime
 
 local ITEM_LEVEL_LABEL = NORMAL_FONT_COLOR:WrapTextInColorCode(STAT_AVERAGE_ITEM_LEVEL .. ":")
 
-local function AddTooltipLine(avgItemLevel, refresh)
+local function AddItemLine(avgItemLevel, refresh)
     if avgItemLevel > 0 then
         avgItemLevel = RoundToSignificantDigits(avgItemLevel, 2)
         GameTooltip:AddDoubleLine(ITEM_LEVEL_LABEL, avgItemLevel, nil, nil, nil, 1, 1, 1)
@@ -67,7 +67,7 @@ do
                 local avgItemLevel = C_PaperDollInfo.GetInspectItemLevel(lastInspectedUnit)
                 if avgItemLevel > 0 then
                     ItemLevel:Cache(guid, avgItemLevel)
-                    AddTooltipLine(avgItemLevel, true)
+                    AddItemLine(avgItemLevel, true)
                 end
                 lastInspectedUnit = nil
                 lastInspectedGuid = nil
@@ -136,7 +136,7 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tool
             avgItemLevel = Player:InspectAverageItemLevel(unit)
         end
 
-        AddTooltipLine(avgItemLevel)
+        AddItemLine(avgItemLevel)
     else
         Player:ClearInspection()
     end
