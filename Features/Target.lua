@@ -16,22 +16,18 @@ local OTHER_UNIT_NAME_FORMAT = "|cffffffff%s|r"
 
 local function GetTargetName(unit)
     local name = UnitName(unit)
-
     if UnitIsUnit(unit, "player") then
         return PLAYER_FORMAT
     elseif UnitIsPlayer(unit) then
         local classFilename = select(2, UnitClass(unit))
-
         if classFilename then
             local classColor = RAID_CLASS_COLORS[classFilename] or HIGHLIGHT_FONT_COLOR
-
             if classColor then
                 return classColor:WrapTextInColorCode(name)
             end
         end
     elseif UnitReaction(unit, "player") then
         local factionColor = FACTION_BAR_COLORS[UnitReaction(unit, "player")]
-
         if factionColor then
             return factionColor:WrapTextInColorCode(name)
         end
