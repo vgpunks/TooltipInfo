@@ -78,8 +78,10 @@ end)
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tooltip)
     if tooltip:IsForbidden() then return end
     if tooltip ~= GameTooltip then return end 
+    
     if GameTooltipStatusBar.TextString then
         local textWidth = GameTooltipStatusBar.TextString:GetStringWidth()
+
         if textWidth then
             tooltip:SetMinimumWidth(textWidth)
         end
