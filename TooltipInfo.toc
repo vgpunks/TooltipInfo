@@ -11,6 +11,7 @@
 
 Core\StaticPopupDialogs.lua
 
+Features\Name.lua
 Features\AFK.lua
 Features\Class.lua
 Features\Guild.lua
@@ -21,7 +22,7 @@ Features\ItemSource.lua
 Features\Level.lua
 Features\Macro.lua
 Features\MythicScore.lua
-Features\Name.lua
+Features\PvP.lua
 Features\Race.lua
 Features\RaidIcon.lua
 Features\StatusBar.lua
