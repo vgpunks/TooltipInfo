@@ -39,6 +39,7 @@ GameTooltipStatusBar:HookScript("OnValueChanged", function(self, value)
     self.showPercentage = not unit and max == 1
 
     local textString = self.TextString
+    
     if(textString) then
         if value == 0 then
             self.TextString:Hide()
@@ -58,8 +59,10 @@ GameTooltipStatusBar:HookScript("OnValueChanged", function(self, value)
     
     if unit and UnitIsPlayer(unit) then
         local _, classFilename = UnitClass(unit)
+
         if classFilename then
             local classColor = RAID_CLASS_COLORS[classFilename]
+
             if classColor then
                 r, g, b = classColor.r, classColor.g, classColor.b
             end
@@ -78,7 +81,7 @@ end)
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tooltip)
     if tooltip:IsForbidden() then return end
     if tooltip ~= GameTooltip then return end 
-    
+
     if GameTooltipStatusBar.TextString then
         local textWidth = GameTooltipStatusBar.TextString:GetStringWidth()
 
