@@ -12,29 +12,31 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 local THE_TARGET_FORMAT = "|cfffed100" .. TARGET .. ":|r %s"
 local PLAYER_FORMAT = "|cffffffff<You>|r"
-local UNIT_NAME_FORMAT = "|cff%2x%2x%2x%s|r"
 local OTHER_UNIT_NAME_FORMAT = "|cffffffff%s|r"
 
-local function GetUnitName(color, unit)
-    return UNIT_NAME_FORMAT:format(color.r * 255, color.g * 255, color.b * 255, UnitName(unit))
-end
-
 local function GetTargetName(unit)
+    local name = UnitName(unit)
+
     if UnitIsUnit(unit, "player") then
         return PLAYER_FORMAT
     elseif UnitIsPlayer(unit) then
-        local class = select(2, UnitClass(unit))
+        local classFilename = select(2, UnitClass(unit))
 
-        if class then
-            local color = RAID_CLASS_COLORS[class]
-            return GetUnitName(color, unit)
+        if classFilename then
+            local classColor = RAID_CLASS_COLORS[classFilename] or HIGHLIGHT_FONT_COLOR
+
+            if classColor then
+                return classColor:WrapTextInColorCode(name)
+            end
         end
     elseif UnitReaction(unit, "player") then
-        local color = FACTION_BAR_COLORS[UnitReaction(unit, "player")]
-        
-        return GetUnitName(color, unit)
+        local factionColor = FACTION_BAR_COLORS[UnitReaction(unit, "player")]
+
+        if factionColor then
+            return factionColor:WrapTextInColorCode(name)
+        end
     else
-        return OTHER_UNIT_NAME_FORMAT:format(UnitName(unit))
+        return OTHER_UNIT_NAME_FORMAT:format(name)
     end
 end
 
