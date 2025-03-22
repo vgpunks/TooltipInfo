@@ -57,9 +57,8 @@ end
 TooltipDataProcessor.AddTooltipPostCall(TooltipDataProcessor.AllTypes, function(tooltip, data)
     if not IsControlKeyDown() then return end
     if tooltip:IsForbidden() then return end
-    if data.type == Enum.TooltipDataType.Unit then return end
 
-    local label = ID
+    local label = nil
     local id = data and data.id
 
     if data.type == Enum.TooltipDataType.Item then
@@ -103,7 +102,9 @@ TooltipDataProcessor.AddTooltipPostCall(TooltipDataProcessor.AllTypes, function(
         label = CURRENCY_LABEL
     end
 
-    AddTooltipLine(tooltip, label, id)
+    if label then
+        AddTooltipLine(tooltip, label, id)
+    end
 end)
 
 hooksecurefunc("BattlePetToolTip_Show", function(battlePetSpeciesID)
