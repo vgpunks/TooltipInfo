@@ -26,11 +26,26 @@ local FACTION_LABEL = "Faction ID"
 local ID_FORMAT = "|cffca3c3c<%s>|r %s"
 local LINK_PATTERN = ":(%w+)"
 
+local lastAddedInfo = {}
+do
+    local frame = CreateFrame("Frame")
+    frame:RegisterEvent("MODIFIER_STATE_CHANGED")
+    frame:SetScript("OnEvent", function(_, _, key, down)
+        if StaticPopup_Visible("TOOLTIPINFO_COPY_ID") then return end
+        if key:find("ALT") and down == 1 and lastAddedInfo.id then
+            StaticPopup_Show("TOOLTIPINFO_COPY_ID", lastAddedInfo.label, nil, lastAddedInfo)
+        end
+    end)
+
+    hooksecurefunc(GameTooltip, "Hide", function()
+        lastAddedInfo.id = nil
+    end)
+end
+
 local function AddTooltipLine(tooltip, label, id, refresh)
     if tooltip and id then
-        if IsAltKeyDown() and not StaticPopup_Visible("TOOLTIPINFO_COPY_ID") then
-            StaticPopup_Show("TOOLTIPINFO_COPY_ID", label, nil, id)
-        end
+        lastAddedInfo.id = id
+        lastAddedInfo.label = label
         id = ID_FORMAT:format(ID, id)
         tooltip:AddLine(id)
         if refresh then
@@ -42,6 +57,7 @@ end
 TooltipDataProcessor.AddTooltipPostCall(TooltipDataProcessor.AllTypes, function(tooltip, data)
     if not IsControlKeyDown() then return end
     if tooltip:IsForbidden() then return end
+    if data.type == Enum.TooltipDataType.Unit then return end
 
     local label = ID
     local id = data and data.id
