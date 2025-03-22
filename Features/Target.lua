@@ -24,12 +24,14 @@ local function GetTargetName(unit)
         return PLAYER_FORMAT
     elseif UnitIsPlayer(unit) then
         local class = select(2, UnitClass(unit))
+
         if class then
             local color = RAID_CLASS_COLORS[class]
             return GetUnitName(color, unit)
         end
     elseif UnitReaction(unit, "player") then
         local color = FACTION_BAR_COLORS[UnitReaction(unit, "player")]
+        
         return GetUnitName(color, unit)
     else
         return OTHER_UNIT_NAME_FORMAT:format(UnitName(unit))
@@ -44,10 +46,12 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tool
     
     if unit then
         local numLines = tooltip:NumLines()
+
         for i = 1, numLines do
             local line = _G["GameTooltipTextLeft" .. i]
             local text = line:GetText()
             local unit = unit .. "target"
+
             if text and text:find(THE_TARGET_FORMAT:format(".+")) then
                 if UnitExists(unit) then
                     line:SetText(THE_TARGET_FORMAT:format(GetTargetName(unit)))
