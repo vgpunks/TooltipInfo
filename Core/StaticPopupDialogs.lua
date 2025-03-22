@@ -20,6 +20,7 @@ StaticPopupDialogs["TOOLTIPINFO_COPY_ID"] = StaticPopupDialogs["TOOLTIPINFO_COPY
     end,
     OnHide = function(self, info)
         self.editBox:SetScript("OnTextChanged", nil)
+        self.editBox.originalText = nil
         info.id = nil
     end,
     EditBoxOnEnterPressed = HideParentPanel,
