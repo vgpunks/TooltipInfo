@@ -1,9 +1,18 @@
 local UnitIsPlayer = UnitIsPlayer
-local UnitIsPVP = UnitIsPVP
+local UnitName = UnitName
+local UnitClass = UnitClass
+local UnitRealmRelationship = UnitRealmRelationship
+local UnitPVPName = UnitPVPName
+local GetRealmName = GetRealmName
+local IsShiftKeyDown = IsShiftKeyDown
 
-local PVP = PVP
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local LE_REALM_RELATION_COALESCED = LE_REALM_RELATION_COALESCED
+local FOREIGN_SERVER_LABEL = " *"
+local LE_REALM_RELATION_VIRTUAL = LE_REALM_RELATION_VIRTUAL
+local INTERACTIVE_SERVER_LABEL = " #"
 
-local PVP_LABEL = " (" .. PVP .. ")"
+local NAME_LABEL = "%s-%s"
 
 TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.UnitName, function(tooltip, lineData)
     if tooltip:IsForbidden() then return end
@@ -12,21 +21,32 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.UnitName, function(
     local unit = lineData.unitToken
 
     if unit and UnitIsPlayer(unit) then
+        local name, realm = UnitName(unit)
+        local relationship = UnitRealmRelationship(unit)
         local _, classFilename = UnitClass(unit)
+
+        if IsShiftKeyDown() then
+            if unit == "player" then
+                realm = GetRealmName()
+            end
+            if realm and realm ~= '' then
+                name = NAME_LABEL:format(name, realm)
+            end
+        else
+            name = UnitPVPName(unit) or name
+            if relationship == LE_REALM_RELATION_COALESCED then
+				name = name .. FOREIGN_SERVER_LABEL
+			elseif relationship == LE_REALM_RELATION_VIRTUAL then
+				name = name .. INTERACTIVE_SERVER_LABEL
+			end
+        end
+
+        lineData.leftText = name
+
         if classFilename then
             local classColor = RAID_CLASS_COLORS[classFilename]
             if classColor then
-                local name = classColor:WrapTextInColorCode(lineData.leftText)
-                if UnitIsPVP(unit) then
-                    local hostileColor = FACTION_BAR_COLORS[5] -- Green (friendly)
-                    if UnitIsEnemy("player", unit) then
-                        hostileColor = FACTION_BAR_COLORS[1] -- Red (hostile)
-                    elseif UnitCanAttack("player", unit) then
-                        hostileColor = FACTION_BAR_COLORS[4] -- Yellow (neutral)
-                    end
-                    name = name .. hostileColor:WrapTextInColorCode(PVP_LABEL)
-                end
-                lineData.leftText = name
+                lineData.leftText = classColor:WrapTextInColorCode(lineData.leftText)
             end
         end
     end
