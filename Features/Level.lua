@@ -4,13 +4,12 @@ local GetDifficultyColor = GetDifficultyColor
 local UnitIsPlayer = UnitIsPlayer
 local UnitEffectiveLevel = UnitEffectiveLevel
 local UnitLevel = UnitLevel
+local GetGuildInfo = GetGuildInfo
 
 local LEVEL1_FORMAT = "|cff%s%d|r"
 local LEVEL2_FORMAT = "|cff%s%d|r (%d)"
 
 local PLAYER_PATTERN = "%(" .. PLAYER .. "%)"
-
-local lineNumber = 2
 
 TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tooltip, lineData)
     if tooltip:IsForbidden() then return end
@@ -18,13 +17,18 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tool
     
     local _, unit = tooltip:GetUnit()
 
-    lineNumber = lineNumber > tooltip:NumLines() and 2 or lineNumber + 1
+    if unit and UnitIsPlayer(unit) then
+        local guildName = GetGuildInfo(unit)
 
-    if unit and UnitIsPlayer(unit) and lineNumber > 2 then
+        if guildName and lineData.leftText:find(guildName) then
+            return
+        end
+
         local difficulty = GetContentDifficultyCreatureForPlayer(unit)
         local diffColor = GetDifficultyColor(difficulty)
 		local diffHexColor = CreateColor(diffColor.r, diffColor.g, diffColor.b, 1):GenerateHexColorNoAlpha()
 		local level, realLevel = UnitEffectiveLevel(unit), UnitLevel(unit)
+
         if lineData.leftText:find(LEVEL) then
             -- Removes the (Player) bit from the level line.
             lineData.leftText = lineData.leftText:gsub(PLAYER_PATTERN, "")
