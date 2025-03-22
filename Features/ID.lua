@@ -50,7 +50,7 @@ do
 end
 
 local function AddIDLine(label, id, tooltip, refresh)
-    if tooltip and id then
+    if label and id and tooltip then
         Info:Add(label, id)
         id = ID_FORMAT:format(ID, id)
         tooltip:AddLine(id)
