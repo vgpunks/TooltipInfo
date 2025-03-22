@@ -13,6 +13,7 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.UnitName, function(
 
     if unit and UnitIsPlayer(unit) then
         local ricon = GetRaidTargetIndex(unit)
+        
         if ricon then
             lineData.leftText = RAID_ICON_FORMAT:format(ICON_LIST[ricon] .. "18|t", lineData.leftText)
         end
