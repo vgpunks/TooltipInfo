@@ -49,7 +49,7 @@ do
     end
 end
 
-local function AddInfo(label, id, tooltip, refresh)
+local function AddIDLine(label, id, tooltip, refresh)
     if tooltip and id then
         Info:Add(label, id)
         id = ID_FORMAT:format(ID, id)
@@ -108,14 +108,14 @@ TooltipDataProcessor.AddTooltipPostCall(TooltipDataProcessor.AllTypes, function(
         label = CURRENCY_LABEL
     end
 
-    AddInfo(label, id, tooltip)
+    AddIDLine(label, id, tooltip)
 end)
 
 hooksecurefunc("BattlePetToolTip_Show", function(battlePetSpeciesID)
     if not IsControlKeyDown() then return end
     if BattlePetTooltip:IsForbidden() then return end
 
-    AddInfo(BATTLE_PET_LABEL, battlePetSpeciesID, BattlePetTooltip, true)
+    AddIDLine(BATTLE_PET_LABEL, battlePetSpeciesID, BattlePetTooltip, true)
 end)
 
 hooksecurefunc("QuestMapLogTitleButton_OnEnter", function(frame)
@@ -124,7 +124,7 @@ hooksecurefunc("QuestMapLogTitleButton_OnEnter", function(frame)
 
     local questID = frame.questLogIndex and GetQuestIDForLogIndex(frame.questLogIndex)
     
-    AddInfo(QUEST_LABEL, questID, GameTooltip, true)
+    AddIDLine(QUEST_LABEL, questID, GameTooltip, true)
 end)
 
 hooksecurefunc("TaskPOI_OnEnter", function(frame)
@@ -133,7 +133,7 @@ hooksecurefunc("TaskPOI_OnEnter", function(frame)
 
     local questID = frame.questID
 
-    AddInfo(QUEST_LABEL, questID, GameTooltip, true)
+    AddIDLine(QUEST_LABEL, questID, GameTooltip, true)
 end)
 
 do
@@ -142,7 +142,7 @@ do
         if not IsControlKeyDown() then return end
         if GameTooltip:IsForbidden() then return end
         
-        AddInfo(FACTION_LABEL, self.elementData.factionID, GameTooltip, true)
+        AddIDLine(FACTION_LABEL, self.elementData.factionID, GameTooltip, true)
     end
 
     local function OnInitializedFrame(_, frame)
