@@ -25,6 +25,7 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tool
         
         if lineData.leftText:find(className) then
             local classColor = RAID_CLASS_COLORS[classFilename]
+            
             if classColor then
                 lineData.leftText = classColor:WrapTextInColorCode(lineData.leftText)
             end
