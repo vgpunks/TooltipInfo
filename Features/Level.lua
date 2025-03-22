@@ -24,15 +24,14 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tool
             return
         end
 
-        local difficulty = GetContentDifficultyCreatureForPlayer(unit)
-        local diffColor = GetDifficultyColor(difficulty)
-		local diffHexColor = CreateColor(diffColor.r, diffColor.g, diffColor.b, 1):GenerateHexColorNoAlpha()
-		local level, realLevel = UnitEffectiveLevel(unit), UnitLevel(unit)
-
         if lineData.leftText:find(LEVEL) then
             -- Removes the (Player) bit from the level line.
             lineData.leftText = lineData.leftText:gsub(PLAYER_PATTERN, "")
 
+            local difficulty = GetContentDifficultyCreatureForPlayer(unit)
+            local diffColor = GetDifficultyColor(difficulty)
+            local diffHexColor = CreateColor(diffColor.r, diffColor.g, diffColor.b, 1):GenerateHexColorNoAlpha()
+            local level, realLevel = UnitEffectiveLevel(unit), UnitLevel(unit)
             local levelText = level > 0 and level or "??"
 
             if level < realLevel then
