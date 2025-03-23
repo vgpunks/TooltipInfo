@@ -1,16 +1,8 @@
 local UnitIsPlayer = UnitIsPlayer
 local UnitRace = UnitRace
 local UnitIsFriend = UnitIsFriend
-
-local RACE_FORMAT = "%%s%%s|r"
-
-local function GetUnitReactionColor(unit)
-    if UnitIsFriend(unit, "player") then
-        return "|cff49ad4d"
-    else
-        return "|cffff0000"
-    end
-end
+local UnitIsEnemy = UnitIsEnemy
+local UnitCanAttack = UnitCanAttack
 
 TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tooltip, lineData)
     if tooltip:IsForbidden() then return end
@@ -26,8 +18,13 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tool
         end
 
         if lineData.leftText:find(race) then
-            lineData.leftText = lineData.leftText:gsub(race, RACE_FORMAT)
-            lineData.leftText = lineData.leftText:format(GetUnitReactionColor(unit), race)
+            local hostileColor = FACTION_BAR_COLORS[5] -- Green (friendly)
+            if UnitIsEnemy("player", unit) then
+                hostileColor = FACTION_BAR_COLORS[1] -- Red (hostile)
+            elseif UnitCanAttack("player", unit) then
+                hostileColor = FACTION_BAR_COLORS[4] -- Yellow (neutral)
+            end
+            lineData.leftText = lineData.leftText:gsub(race, hostileColor:WrapTextInColorCode(race))
         end
     end
 end)
