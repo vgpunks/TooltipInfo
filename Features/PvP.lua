@@ -2,7 +2,6 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVP = UnitIsPVP
 local UnitIsEnemy = UnitIsEnemy
 local UnitCanAttack = UnitCanAttack
-local GetGuildInfo = GetGuildInfo
 
 local PVP = PVP
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
@@ -24,19 +23,6 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.UnitName, function(
                 hostileColor = FACTION_BAR_COLORS[4] -- Yellow (neutral)
             end
             lineData.leftText = lineData.leftText .. hostileColor:WrapTextInColorCode(PVP_LABEL)
-        end
-    end
-end)
-
-TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tooltip, lineData)
-    if tooltip:IsForbidden() then return end
-    if tooltip ~= GameTooltip then return end
-
-    local _, unit = tooltip:GetUnit()
-    
-    if unit and UnitIsPlayer(unit) and not lineData.isGuildLine then
-        if lineData.leftText == PVP then
-            lineData.leftText = ""
         end
     end
 end)

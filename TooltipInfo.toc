@@ -16,6 +16,7 @@ Features\Name.lua
 Features\PvP.lua
 Features\AFK.lua
 Features\Guild.lua
+Features\Filter.lua
 Features\Level.lua
 Features\Race.lua
 Features\Class.lua
