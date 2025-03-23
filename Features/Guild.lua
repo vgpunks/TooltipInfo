@@ -17,7 +17,9 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tool
             return
         end
 
-        if lineData.leftText:find(guildName) then
+        if lineData.leftText:find(guildName) and not lineData.isGuildLine then
+            lineData.isGuildLine = true
+
             local guildFullName = guildName
 
             if guildRealm and IsShiftKeyDown() then

@@ -1,6 +1,5 @@
 local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
-local GetGuildInfo = GetGuildInfo
 
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
@@ -10,13 +9,7 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tool
 
     local _, unit = tooltip:GetUnit()
  
-    if unit and UnitIsPlayer(unit) then
-        local guildName = GetGuildInfo(unit)
-
-        if guildName and lineData.leftText:find(guildName) then
-            return
-        end
-
+    if unit and UnitIsPlayer(unit) and not lineData.isGuildLine then
         local className, classFilename = UnitClass(unit)
 
         if not className or not classFilename then

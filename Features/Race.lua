@@ -1,7 +1,6 @@
 local UnitIsPlayer = UnitIsPlayer
 local UnitRace = UnitRace
 local UnitIsFriend = UnitIsFriend
-local GetGuildInfo = GetGuildInfo
 
 local RACE_FORMAT = "%%s%%s|r"
 
@@ -19,13 +18,7 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tool
     
     local _, unit = tooltip:GetUnit()
 
-    if unit and UnitIsPlayer(unit) then
-        local guildName = GetGuildInfo(unit)
-
-        if guildName and lineData.leftText:find(guildName) then
-            return
-        end
-
+    if unit and UnitIsPlayer(unit) and not lineData.isGuildLine then
         local race = UnitRace(unit)
 
         if not race then

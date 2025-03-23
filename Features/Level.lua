@@ -4,7 +4,6 @@ local GetDifficultyColor = GetDifficultyColor
 local UnitIsPlayer = UnitIsPlayer
 local UnitEffectiveLevel = UnitEffectiveLevel
 local UnitLevel = UnitLevel
-local GetGuildInfo = GetGuildInfo
 
 local LEVEL1_FORMAT = "|cff%s%d|r"
 local LEVEL2_FORMAT = "|cff%s%d|r (%d)"
@@ -17,13 +16,7 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tool
     
     local _, unit = tooltip:GetUnit()
 
-    if unit and UnitIsPlayer(unit) then
-        local guildName = GetGuildInfo(unit)
-
-        if guildName and lineData.leftText:find(guildName) then
-            return
-        end
-
+    if unit and UnitIsPlayer(unit) and not lineData.isGuildLine then
         if lineData.leftText:find(LEVEL) then
             -- Removes the (Player) bit from the level line.
             lineData.leftText = lineData.leftText:gsub(PLAYER_PATTERN, "")
