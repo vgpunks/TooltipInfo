@@ -11,8 +11,8 @@
 
 Core\StaticPopupDialogs.lua
 
-Features\Name.lua
 Features\RaidIcon.lua
+Features\Name.lua
 Features\PvP.lua
 Features\AFK.lua
 Features\Guild.lua
@@ -20,10 +20,10 @@ Features\Level.lua
 Features\Race.lua
 Features\Class.lua
 Features\HonorLevel.lua
-Features\ID.lua
-Features\ItemLevel.lua
-Features\ItemSource.lua
-Features\Macro.lua
 Features\MythicScore.lua
+Features\ItemLevel.lua
 Features\Target.lua
 Features\StatusBar.lua
+Features\ID.lua
+Features\ItemSource.lua
+Features\Macro.lua
