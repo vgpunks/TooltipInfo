@@ -14,7 +14,7 @@ Core\StaticPopupDialogs.lua
 Features\RaidIcon.lua
 Features\Name.lua
 Features\PvP.lua
-Features\AFK.lua
+Features\Status.lua
 Features\Guild.lua
 Features\Filter.lua
 Features\Level.lua
