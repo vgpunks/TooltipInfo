@@ -10,14 +10,14 @@ local TARGET = TARGET
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
-local THE_TARGET_FORMAT = "|cfffed100" .. TARGET .. ":|r %s"
-local PLAYER_FORMAT = "|cffffffff<You>|r"
-local OTHER_UNIT_NAME_FORMAT = "|cffffffff%s|r"
+local PLAYER_LABEL = WHITE_FONT_COLOR:WrapTextInColorCode("<You>")
+local THE_TARGET_FORMAT = NORMAL_FONT_COLOR:WrapTextInColorCode(TARGET .. ": %s")
+local OTHER_UNIT_NAME_FORMAT = WHITE_FONT_COLOR:WrapTextInColorCode("%s")
 
 local function GetTargetName(unit)
     local name = UnitName(unit)
     if UnitIsUnit(unit, "player") then
-        return PLAYER_FORMAT
+        return PLAYER_LABEL
     elseif UnitIsPlayer(unit) then
         local classFilename = select(2, UnitClass(unit))
         if classFilename then
