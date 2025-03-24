@@ -1,8 +1,9 @@
 local UnitIsPlayer = UnitIsPlayer
 local GetGuildInfo = GetGuildInfo
 
-local GUILD_FORMAT = "|cff00ff10%s|r |cff00ff10<%s>|r"
+local GUILD_FORMAT = "%s <%s>"
 local GUILD_FULLNAME_FORMAT = "%s-%s"
+local GUILD_LABEL = GREEN_FONT_COLOR:WrapTextInColorCode(GUILD_FORMAT)
 
 TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tooltip, lineData)
     if tooltip:IsForbidden() then return end
@@ -26,7 +27,7 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tool
                 guildFullName = GUILD_FULLNAME_FORMAT:format(guildName, guildRealm)
             end
 
-            lineData.leftText = GUILD_FORMAT:format(guildFullName, guildRankName)
+            lineData.leftText = GUILD_LABEL:format(guildFullName, guildRankName)
         end
     end
 end)
