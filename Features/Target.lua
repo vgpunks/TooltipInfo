@@ -12,7 +12,6 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 local PLAYER_LABEL = WHITE_FONT_COLOR:WrapTextInColorCode("<You>")
 local THE_TARGET_FORMAT = NORMAL_FONT_COLOR:WrapTextInColorCode(TARGET .. ": %s")
-local OTHER_UNIT_NAME_FORMAT = WHITE_FONT_COLOR:WrapTextInColorCode("%s")
 
 local function GetTargetName(unit)
     local name = UnitName(unit)
@@ -32,7 +31,7 @@ local function GetTargetName(unit)
             return factionColor:WrapTextInColorCode(name)
         end
     else
-        return OTHER_UNIT_NAME_FORMAT:format(name)
+        return WHITE_FONT_COLOR:WrapTextInColorCode(name)
     end
 end
 
