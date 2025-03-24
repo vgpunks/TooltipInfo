@@ -6,25 +6,19 @@ local HONOR_LEVEL_TOOLTIP = HONOR_LEVEL_TOOLTIP
 
 local HONOR_LEVEL_LABEL = HONOR_LEVEL_TOOLTIP:gsub(" %%d", ":")
 
-local lineNumber = 2
-
-TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tooltip, lineData)
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tooltip)
     if tooltip:IsForbidden() then return end
     if tooltip ~= GameTooltip then return end
-    
+
     local _, unit = tooltip:GetUnit()
-
-    lineNumber = lineNumber > tooltip:NumLines() and 2 or lineNumber + 1
-
-    if unit and UnitIsPlayer(unit) and lineNumber > 2 then
+    
+    if unit and UnitIsPlayer(unit) then
         local honorLevel = UnitHonorLevel(unit)
-		local _, localizedFaction = UnitFactionGroup(unit)
-		if honorLevel <= 0 or not localizedFaction then
+
+		if honorLevel <= 0 then
             return
 		end
-        if lineData.leftText == localizedFaction then
-            lineData.leftText = ""
-            tooltip:AddDoubleLine(HONOR_LEVEL_LABEL, honorLevel, nil, nil, nil, 1, 1, 1)
-        end
+
+        tooltip:AddDoubleLine(HONOR_LEVEL_LABEL, honorLevel, nil, nil, nil, 1, 1, 1)
     end
 end)
