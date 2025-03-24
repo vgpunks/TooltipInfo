@@ -7,8 +7,14 @@ local UnitLevel = UnitLevel
 
 local LEVEL = LEVEL
 
-local LEVEL1_FORMAT = "|cff%s%d|r"
-local LEVEL2_FORMAT = "|cff%s%d|r (%d)"
+local LEVEL_TW_FORMAT = "%d (%d)"
+
+local DIFFICULTY_COLOR = {}
+
+for _, difficulty in pairs(Enum.RelativeContentDifficulty) do
+    local diffColor = GetDifficultyColor(difficulty)
+    DIFFICULTY_COLOR[difficulty] = CreateColor(diffColor.r, diffColor.g, diffColor.b, 1)
+end
 
 TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tooltip, lineData)
     if tooltip:IsForbidden() then return end
@@ -19,15 +25,14 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tool
     if unit and UnitIsPlayer(unit) and not lineData.isGuildLine then
         if lineData.leftText:find(LEVEL) then
             local difficulty = GetContentDifficultyCreatureForPlayer(unit)
-            local diffColor = GetDifficultyColor(difficulty)
-            local diffHexColor = CreateColor(diffColor.r, diffColor.g, diffColor.b, 1):GenerateHexColorNoAlpha()
+            local diffColor = DIFFICULTY_COLOR[difficulty]
             local level, realLevel = UnitEffectiveLevel(unit), UnitLevel(unit)
             local levelText = level > 0 and level or "??"
 
             if level < realLevel then
-                levelText = LEVEL2_FORMAT:format(diffHexColor, levelText, realLevel)
+                levelText = diffColor:WrapTextInColorCode(LEVEL_TW_FORMAT:format(levelText, realLevel))
             else
-                levelText = LEVEL1_FORMAT:format(diffHexColor, levelText)
+                levelText = diffColor:WrapTextInColorCode(levelText)
             end
 
             lineData.leftText = lineData.leftText:gsub(level, levelText)
