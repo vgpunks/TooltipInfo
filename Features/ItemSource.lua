@@ -3,8 +3,9 @@ local GetItemInfo = GetItemInfo
 
 local _G = _G
 
-local LINK_PATTERN = ":(%w+)"
 local EXPAC_LABEL = HIGHLIGHT_FONT_COLOR:WrapTextInColorCode(SOURCE) .. " %s"
+
+local LINK_PATTERN = ":(%w+)"
 
 local ITEMS_CACHE = {}
 
