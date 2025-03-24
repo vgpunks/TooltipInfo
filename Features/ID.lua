@@ -9,6 +9,9 @@ local GetAuraDataByIndex = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex
 local GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
 local BattlePetToolTip_Show = BattlePetToolTip_Show
 local QuestMapLogTitleButton_OnEnter = QuestMapLogTitleButton_OnEnter
+local StaticPopup_Visible = StaticPopup_Visible
+local StaticPopup_Show = StaticPopup_Show
+local GetPetInfoByPetID = C_PetJournal.GetPetInfoByPetID
 
 local _G = _G
 local ID = _G.ID
@@ -24,6 +27,7 @@ local CURRENCY_LABEL = "Currency ID"
 local FACTION_LABEL = "Faction ID"
 
 local ID_FORMAT = "|cffca3c3c<%s>|r %s"
+
 local LINK_PATTERN = ":(%w+)"
 
 local Info = {}
@@ -98,7 +102,7 @@ TooltipDataProcessor.AddTooltipPostCall(TooltipDataProcessor.AllTypes, function(
             local info = tooltip:GetPrimaryTooltipInfo()
             if info and info.getterArgs then
                 local battlePetGuid = unpack(info.getterArgs)
-                id = C_PetJournal.GetPetInfoByPetID(battlePetGuid)
+                id = GetPetInfoByPetID(battlePetGuid)
             end
         end
         label = BATTLE_PET_LABEL
