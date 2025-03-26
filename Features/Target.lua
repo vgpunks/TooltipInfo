@@ -14,25 +14,23 @@ local PLAYER_LABEL = WHITE_FONT_COLOR:WrapTextInColorCode("<You>")
 local THE_TARGET_FORMAT = NORMAL_FONT_COLOR:WrapTextInColorCode(TARGET .. ": %s")
 
 local function GetTargetName(unit)
-    local name = UnitName(unit)
+    local name, color = nil, nil
     if UnitIsUnit(unit, "player") then
         return PLAYER_LABEL
     elseif UnitIsPlayer(unit) then
         local classFilename = select(2, UnitClass(unit))
         if classFilename then
-            local classColor = RAID_CLASS_COLORS[classFilename] or HIGHLIGHT_FONT_COLOR
-            if classColor then
-                return classColor:WrapTextInColorCode(name)
-            end
-        end
-    elseif UnitReaction(unit, "player") then
-        local factionColor = FACTION_BAR_COLORS[UnitReaction(unit, "player")]
-        if factionColor then
-            return factionColor:WrapTextInColorCode(name)
+            color = RAID_CLASS_COLORS[classFilename]
         end
     else
-        return WHITE_FONT_COLOR:WrapTextInColorCode(name)
+        local reaction = UnitReaction(unit, "player")
+        if reaction then
+            color = FACTION_BAR_COLORS[reaction]
+        end
     end
+    name = UnitName(unit)
+    color = color or WHITE_FONT_COLOR
+    return color:WrapTextInColorCode(name)
 end
 
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tooltip)
