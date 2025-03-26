@@ -1,3 +1,6 @@
+local _, addon = ...
+local Player = addon.Player
+
 local UnitIsPlayer = UnitIsPlayer
 local UnitRace = UnitRace
 local UnitIsFriend = UnitIsFriend
@@ -18,13 +21,8 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tool
         end
 
         if lineData.leftText:find(race) then
-            local hostileColor = FACTION_BAR_COLORS[5] -- Green (friendly)
-            if UnitIsEnemy("player", unit) then
-                hostileColor = FACTION_BAR_COLORS[1] -- Red (hostile)
-            elseif UnitCanAttack("player", unit) then
-                hostileColor = FACTION_BAR_COLORS[4] -- Yellow (neutral)
-            end
-            lineData.leftText = lineData.leftText:gsub(race, hostileColor:WrapTextInColorCode(race))
+            local reactionColor = Player:GetReactionColor(unit)
+            lineData.leftText = lineData.leftText:gsub(race, reactionColor:WrapTextInColorCode(race))
         end
     end
 end)
