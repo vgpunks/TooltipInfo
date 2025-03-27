@@ -3,15 +3,19 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitGUID = UnitGUID
 local UnitIsUnit = UnitIsUnit
 local UnitExists = UnitExists
+local UnitIsConnected = UnitIsConnected
+local UnitIsDeadOrGhost = UnitIsDeadOrGhost
 local CanInspect = CanInspect
 local CheckInteractDistance = CheckInteractDistance
 local GetInventoryItemLink = GetInventoryItemLink
 local GetItemInfo = GetItemInfo
 local GetAverageItemLevel = GetAverageItemLevel
+local GetInspectItemLevel = C_PaperDollInfo.GetInspectItemLevel
 local NotifyInspect = NotifyInspect
 local ClearInspectPlayer = ClearInspectPlayer
 local RoundToSignificantDigits = RoundToSignificantDigits
 local GetTime = GetTime
+local NewTicker = C_Timer.NewTicker
 
 local ITEM_LEVEL_LABEL = NORMAL_FONT_COLOR:WrapTextInColorCode(STAT_AVERAGE_ITEM_LEVEL .. ":")
 
@@ -64,7 +68,7 @@ do
     frame:SetScript("OnEvent", function(self, event, guid)
         if event == "INSPECT_READY" then
             if lastInspectedUnit and UnitExists(lastInspectedUnit) and lastInspectedGuid == guid then
-                local avgItemLevel = C_PaperDollInfo.GetInspectItemLevel(lastInspectedUnit)
+                local avgItemLevel = GetInspectItemLevel(lastInspectedUnit)
                 if avgItemLevel > 0 then
                     ItemLevel:Cache(guid, avgItemLevel)
                     AddItemLine(avgItemLevel, true)
@@ -90,7 +94,7 @@ do
     local function InspectAsync(unit)
         Player:ClearInspection()
         if IsUnitInspectable(unit) then
-            timerHandle = C_Timer.NewTicker(0.5, StartInspect, 1)
+            timerHandle = NewTicker(0.5, StartInspect, 1)
         end
     end
 
