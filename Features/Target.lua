@@ -10,7 +10,7 @@ local TARGET = TARGET
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
-local PLAYER_LABEL = WHITE_FONT_COLOR:WrapTextInColorCode("<You>")
+local PLAYER_LABEL = WHITE_FONT_COLOR:WrapTextInColorCode("<" .. UNIT_YOU ..">")
 local THE_TARGET_FORMAT = NORMAL_FONT_COLOR:WrapTextInColorCode(TARGET .. ": %s")
 
 local function GetTargetName(unit)
