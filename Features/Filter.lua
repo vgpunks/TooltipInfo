@@ -1,8 +1,7 @@
 local PVP = PVP
 local LEVEL = LEVEL
-local PLAYER = PLAYER
 
-local PLAYER_PATTERN = "%(" .. PLAYER .. "%)"
+local LEVEL_PATTERN = "%(.+%)"
 
 TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tooltip, lineData)
     if tooltip:IsForbidden() then return end
@@ -11,18 +10,17 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tool
     local _, unit = tooltip:GetUnit()
     
     if unit and not lineData.isGuildLine then
-        if UnitIsPlayer(unit) then
-            if lineData.leftText:find(LEVEL) then
-                lineData.leftText = lineData.leftText:gsub(PLAYER_PATTERN, "")
-            else
-                local _, localizedFaction = UnitFactionGroup(unit)
-                if lineData.leftText == localizedFaction then
-                    lineData.leftText = ""
-                end
-            end
+        if lineData.leftText:find(LEVEL) then
+            lineData.leftText = lineData.leftText:gsub(LEVEL_PATTERN, "")
         end
         if lineData.leftText == PVP then
             lineData.leftText = ""  
+        end
+        if UnitIsPlayer(unit) then
+            local _, localizedFaction = UnitFactionGroup(unit)
+            if lineData.leftText == localizedFaction then
+                lineData.leftText = ""
+            end
         end
     end
 end)
