@@ -22,7 +22,7 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tool
     
     local _, unit = tooltip:GetUnit()
 
-    if unit and UnitIsPlayer(unit) and not lineData.isGuildLine then
+    if unit and not lineData.isGuildLine then
         if lineData.leftText:find(LEVEL) then
             local difficulty = GetContentDifficultyCreatureForPlayer(unit)
             local diffColor = DIFFICULTY_COLOR[difficulty]

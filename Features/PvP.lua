@@ -17,9 +17,15 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.UnitName, function(
 
     local unit = lineData.unitToken
 
-    if unit and UnitIsPlayer(unit) then
+    if unit then
         if UnitIsPVP(unit) then
-            local reactionColor = Player:GetReactionColor(unit)
+            local reactionColor
+            if UnitIsPlayer(unit) then
+                reactionColor = Player:GetReactionColor(unit)
+            else
+                local reaction = UnitReaction("player", unit)
+                reactionColor = FACTION_BAR_COLORS[reaction]
+            end
             lineData.leftText = lineData.leftText .. reactionColor:WrapTextInColorCode(PVP_LABEL)
         end
     end
