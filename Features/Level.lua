@@ -1,3 +1,5 @@
+local _, addon = ...
+
 local CreateColor = CreateColor
 local GetContentDifficultyCreatureForPlayer = C_PlayerInfo.GetContentDifficultyCreatureForPlayer
 local GetDifficultyColor = GetDifficultyColor
@@ -9,12 +11,7 @@ local LEVEL = LEVEL
 
 local LEVEL_TW_FORMAT = "%d (%d)"
 
-local DIFFICULTY_COLOR = {}
-
-for _, difficulty in pairs(Enum.RelativeContentDifficulty) do
-    local diffColor = GetDifficultyColor(difficulty)
-    DIFFICULTY_COLOR[difficulty] = CreateColor(diffColor.r, diffColor.g, diffColor.b, 1)
-end
+local DIFFICULTY_COLOR = addon.DIFFICULTY_COLOR
 
 TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tooltip, lineData)
     if tooltip:IsForbidden() then return end
