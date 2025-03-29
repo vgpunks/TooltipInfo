@@ -22,6 +22,7 @@ Features\Filter.lua
 Features\Level.lua
 Features\Race.lua
 Features\Class.lua
+Features\Classification.lua
 Features\HonorLevel.lua
 Features\MythicScore.lua
 Features\ItemLevel.lua
