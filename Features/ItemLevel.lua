@@ -92,7 +92,7 @@ do
     end
 
     local function InspectAsync(unit)
-        Player:ClearInspection()
+        Player:StopInspection()
         if IsUnitInspectable(unit) then
             timerHandle = NewTicker(0.5, StartInspect, 1)
         end
@@ -112,7 +112,7 @@ do
         return avgItemLevel
     end
 
-    function Player:ClearInspection()
+    function Player:StopInspection()
         if timerHandle then
             timerHandle:Cancel()
             timerHandle = nil
@@ -142,6 +142,6 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tool
 
         AddItemLine(avgItemLevel)
     else
-        Player:ClearInspection()
+        Player:StopInspection()
     end
 end)
