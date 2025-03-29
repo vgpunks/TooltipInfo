@@ -31,3 +31,4 @@ Features\StatusBar.lua
 Features\ID.lua
 Features\ItemSource.lua
 Features\Macro.lua
+Features\TooltipRefresh.lua
