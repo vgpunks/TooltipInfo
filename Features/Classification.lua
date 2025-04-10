@@ -1,5 +1,3 @@
-local _, addon = ...
-
 local UnitIsPlayer = UnitIsPlayer
 local UnitClassification = UnitClassification
 
