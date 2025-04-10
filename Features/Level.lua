@@ -1,8 +1,6 @@
 local _, addon = ...
 
-local CreateColor = CreateColor
 local GetContentDifficultyCreatureForPlayer = C_PlayerInfo.GetContentDifficultyCreatureForPlayer
-local GetDifficultyColor = GetDifficultyColor
 local UnitIsPlayer = UnitIsPlayer
 local UnitEffectiveLevel = UnitEffectiveLevel
 local UnitLevel = UnitLevel

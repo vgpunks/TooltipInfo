@@ -2,13 +2,8 @@ local select = select
 
 local GameTooltip = GameTooltip
 local BattlePetTooltip = BattlePetTooltip
-local IsShiftKeyDown = IsShiftKeyDown
-local IsAltKeyDown = IsAltKeyDown
-local GetDisplayedItem = TooltipUtil and TooltipUtil.GetDisplayedItem
 local GetAuraDataByIndex = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex
 local GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
-local BattlePetToolTip_Show = BattlePetToolTip_Show
-local QuestMapLogTitleButton_OnEnter = QuestMapLogTitleButton_OnEnter
 local StaticPopup_Visible = StaticPopup_Visible
 local StaticPopup_Show = StaticPopup_Show
 local GetPetInfoByPetID = C_PetJournal.GetPetInfoByPetID

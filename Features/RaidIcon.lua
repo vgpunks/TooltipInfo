@@ -1,6 +1,5 @@
 local ICON_LIST = ICON_LIST
 
-local UnitExists = UnitExists
 local GetRaidTargetIndex = GetRaidTargetIndex
 
 local RAID_ICON_FORMAT = "%s %s"

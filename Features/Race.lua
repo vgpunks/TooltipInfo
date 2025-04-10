@@ -3,9 +3,6 @@ local Player = addon.Player
 
 local UnitIsPlayer = UnitIsPlayer
 local UnitRace = UnitRace
-local UnitIsFriend = UnitIsFriend
-local UnitIsEnemy = UnitIsEnemy
-local UnitCanAttack = UnitCanAttack
 
 TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tooltip, lineData)
     if tooltip:IsForbidden() then return end

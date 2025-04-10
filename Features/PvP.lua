@@ -3,8 +3,6 @@ local Player = addon.Player
 
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVP = UnitIsPVP
-local UnitIsEnemy = UnitIsEnemy
-local UnitCanAttack = UnitCanAttack
 
 local PVP = PVP
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
