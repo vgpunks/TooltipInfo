@@ -22,7 +22,7 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tool
         local classification = UnitClassification(unit)
 
         if not classification then
-            return 
+            return
         end
 
         if lineData.leftText:find(LEVEL) then
