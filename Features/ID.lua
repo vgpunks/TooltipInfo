@@ -127,7 +127,7 @@ hooksecurefunc("QuestMapLogTitleButton_OnEnter", function(frame)
     if GameTooltip:IsForbidden() then return end
 
     local questID = frame.questLogIndex and GetQuestIDForLogIndex(frame.questLogIndex)
-    
+
     AddIDLine(QUEST_LABEL, questID, GameTooltip, true)
 end)
 
@@ -145,7 +145,7 @@ do
         if not self or not self.elementData then return end
         if not IsControlKeyDown() then return end
         if GameTooltip:IsForbidden() then return end
-        
+  
         AddIDLine(FACTION_LABEL, self.elementData.factionID, GameTooltip, true)
     end
 

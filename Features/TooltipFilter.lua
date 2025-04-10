@@ -8,7 +8,7 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tool
     if tooltip ~= GameTooltip then return end
 
     local _, unit = tooltip:GetUnit()
-    
+
     if unit and not lineData.isGuildLine then
         if lineData.leftText:find(LEVEL) then
             lineData.leftText = lineData.leftText:gsub(LEVEL_PATTERN, "")

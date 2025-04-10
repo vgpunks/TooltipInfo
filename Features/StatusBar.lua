@@ -23,23 +23,23 @@ GameTooltipStatusBar.forceShow = true
 GameTooltipStatusBar.lockShow = 0
 GameTooltipStatusBar:HookScript("OnValueChanged", function(self, value)
     self:SetStatusBarColor(0, 1, 0)
-    
+
     if not value then
         return
     end
-    
+
     local min, max = self:GetMinMaxValues()
     if (value < min) or (value > max) then
         return
     end
 
     local _, unit = GameTooltip:GetUnit()
-    
+
     -- Shows percentage on structures
     self.showPercentage = not unit and max == 1
 
     local textString = self.TextString
-    
+
     if(textString) then
         if value == 0 then
             self.TextString:Hide()
@@ -50,13 +50,13 @@ GameTooltipStatusBar:HookScript("OnValueChanged", function(self, value)
             TextStatusBar.UpdateTextStringWithValues(self, textString, value, 0, max)
         end
     end
-  
+
     value = (value - min) / (max - min)
 
     local isHighHealth = value > 0.5
     local factor = CalculateHealthFactor(value, isHighHealth)
     local r, g, b = 0, 1, 0
-    
+
     if unit and UnitIsPlayer(unit) then
         local _, classFilename = UnitClass(unit)
 

@@ -6,13 +6,13 @@ local MYTHIC_PLUS_RATING_LABEL = DUNGEON_SCORE .. ":"
 local MYTHIC_PLUS_BEST_RUN_LABEL = PLAYER_DIFFICULTY_MYTHIC_PLUS .. " "  .. DUNGEON_SCORE_BEST_AFFIX:gsub(" %%s", ": ")
 
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tooltip)
-	if tooltip:IsForbidden() then return end
+    if tooltip:IsForbidden() then return end
     if tooltip ~= GameTooltip then return end
 
     local _, unit = tooltip:GetUnit()
 
     if unit and UnitIsPlayer(unit) then
-		local info = GetPlayerMythicPlusRatingSummary(unit)
+        local info = GetPlayerMythicPlusRatingSummary(unit)
         local score = info and info.currentSeasonScore
 
         if score and score > 0 then
@@ -25,9 +25,9 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tool
             if not color then
                 color = HIGHLIGHT_FONT_COLOR
             end
-            
+
             tooltip:AddDoubleLine(MYTHIC_PLUS_RATING_LABEL, score, nil, nil, nil, color.r, color.g, color.b)
-            
+
             local bestRun = 0
             local challengeModeID = 0
 

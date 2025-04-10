@@ -38,7 +38,7 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tool
     if tooltip ~= GameTooltip then return end
 
     local _, unit = tooltip:GetUnit()
-    
+
     if unit then
         local numLines = tooltip:NumLines()
 

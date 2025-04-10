@@ -35,10 +35,10 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.UnitName, function(
         else
             name = UnitPVPName(unit) or name
             if relationship == LE_REALM_RELATION_COALESCED then
-				name = name .. FOREIGN_SERVER_LABEL
-			elseif relationship == LE_REALM_RELATION_VIRTUAL then
-				name = name .. INTERACTIVE_SERVER_LABEL
-			end
+                name = name .. FOREIGN_SERVER_LABEL
+            elseif relationship == LE_REALM_RELATION_VIRTUAL then
+                name = name .. INTERACTIVE_SERVER_LABEL
+            end
         end
 
         lineData.leftText = name

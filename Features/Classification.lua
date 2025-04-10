@@ -17,16 +17,16 @@ local CLASSIFICATIONS = {
 TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tooltip, lineData)
     if tooltip:IsForbidden() then return end
     if tooltip ~= GameTooltip then return end
-    
+
     local _, unit = tooltip:GetUnit()
 
     if unit and not UnitIsPlayer(unit) then
         local classification = UnitClassification(unit)
-		
+
         if not classification then
             return 
         end
-        
+
         if lineData.leftText:find(LEVEL) then
             local classText = CLASSIFICATIONS[classification]
 

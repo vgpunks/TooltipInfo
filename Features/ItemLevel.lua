@@ -32,7 +32,7 @@ end
 local ItemLevel = {}
 do
     local CACHE_EXPIRATION_TIME = 120
-    
+
     local UNIT_ITEMLEVEL_CACHE = {}
     local UNIT_ITEMLEVEL_TIMESTAMP = {}
 
@@ -45,14 +45,14 @@ do
         local avgItemLevel = UNIT_ITEMLEVEL_CACHE[guid]
         local timestamp = UNIT_ITEMLEVEL_TIMESTAMP[guid]
         local elapsed = timestamp and (GetTime() - timestamp) or (CACHE_EXPIRATION_TIME + 1)
-        
+
         if avgItemLevel and elapsed <= CACHE_EXPIRATION_TIME then
             return avgItemLevel  
         end
-    
+
         UNIT_ITEMLEVEL_CACHE[guid] = nil
         UNIT_ITEMLEVEL_TIMESTAMP[guid] = nil
-    
+
         return nil
     end
 end
@@ -133,7 +133,7 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tool
 
     if unit and UnitIsPlayer(unit) then
         local avgItemLevel = 0
-        
+
         if UnitIsUnit(unit, "player") then
             avgItemLevel = Player:GetAverageItemLevel()
         elseif IsShiftKeyDown() then
