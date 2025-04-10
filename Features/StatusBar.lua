@@ -13,7 +13,7 @@ local function CalculateHealthFactor(value, isHighHealth)
 end
 
 local function AdjustColorIntensity(colorValue, factor, isHighHealth)
-    dimmedColor = colorValue * (1 - factor)
+    local dimmedColor = colorValue * (1 - factor)
 
     return isHighHealth and (dimmedColor + colorValue * 0.7 * factor) or dimmedColor
 end
