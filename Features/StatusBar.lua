@@ -1,3 +1,6 @@
+local GameTooltip = GameTooltip
+local GameTooltipStatusBar = GameTooltipStatusBar
+
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local TextStatusBar = CreateFromMixins(TextStatusBarMixin)
