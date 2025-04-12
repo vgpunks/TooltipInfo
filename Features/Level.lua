@@ -9,6 +9,7 @@ local LEVEL = LEVEL
 local TOOLTIP_UNIT_LEVEL = TOOLTIP_UNIT_LEVEL
 
 local LEVEL_TW_FORMAT = "%d " .. WHITE_FONT_COLOR:WrapTextInColorCode("(%d)")
+local LEVEL_LETHAL = RED_FONT_COLOR:WrapTextInColorCode("??")
 
 local DIFFICULTY_COLOR = addon.DIFFICULTY_COLOR
 
@@ -25,7 +26,7 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tool
             local difficulty = GetContentDifficultyCreatureForPlayer(unit)
             local diffColor = DIFFICULTY_COLOR[difficulty]
             local level, realLevel = UnitEffectiveLevel(unit), UnitLevel(unit)
-            local levelText = level > 0 and level or "??"
+            local levelText = level > 0 and level or LEVEL_LETHAL
 
             if UnitIsPlayer(unit) and level < realLevel then
                 levelText = LEVEL_TW_FORMAT:format(levelText, realLevel)
