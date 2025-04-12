@@ -1,8 +1,6 @@
 local UnitIsPlayer = UnitIsPlayer
 local UnitClassification = UnitClassification
 
-local LEVEL = LEVEL
-
 local CLASSIFICATIONS_FORMAT = " (%s)"
 local CLASSIFICATIONS = {
     elite = ARTIFACT_GOLD_COLOR:WrapTextInColorCode(CLASSIFICATIONS_FORMAT:format(ELITE)),
@@ -25,7 +23,7 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tool
             return
         end
 
-        if lineData.leftText:find(LEVEL) then
+        if lineData.isLevelLine then
             local classText = CLASSIFICATIONS[classification]
 
             if classText then

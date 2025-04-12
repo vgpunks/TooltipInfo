@@ -19,7 +19,9 @@ TooltipDataProcessor.AddLinePreCall(Enum.TooltipDataLineType.None, function(tool
     local _, unit = tooltip:GetUnit()
 
     if unit and not lineData.isGuildLine then
-        if lineData.leftText:find(LEVEL) then
+        if lineData.leftText:find(LEVEL) and not lineData.isLevelLine then
+            lineData.isLevelLine = true
+
             local difficulty = GetContentDifficultyCreatureForPlayer(unit)
             local diffColor = DIFFICULTY_COLOR[difficulty]
             local level, realLevel = UnitEffectiveLevel(unit), UnitLevel(unit)
