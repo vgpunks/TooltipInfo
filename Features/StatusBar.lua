@@ -3,12 +3,31 @@ local GameTooltipStatusBar = GameTooltipStatusBar
 
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
-local TextStatusBar = CreateFromMixins(TextStatusBarMixin)
+local UnitIsPlayer = UnitIsPlayer
+local UnitClass = UnitClass
+
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+
+local STATUSBAR_TEXTURE = "Interface\\TargetingFrame\\UI-TargetingFrame-BarFill"
+local STATUSBAR_WIDTH = 12
 
 do
     local text = GameTooltipStatusBar:CreateFontString(nil, "OVERLAY", "TextStatusBarText")
     text:SetPoint("CENTER")
     GameTooltipStatusBar.TextString = text
+end
+
+do
+    local text = CreateFromMixins(TextStatusBarMixin)
+    GameTooltipStatusBar.TextStatusBar = text
+end
+
+do
+    local bg = GameTooltipStatusBar:CreateTexture(nil, "BACKGROUND")
+    bg:SetTexture(STATUSBAR_TEXTURE)
+    bg:SetAllPoints()
+    bg:SetVertexColor(0.33, 0.33, 0.33, 0.5)
+    GameTooltipStatusBar.Background = bg
 end
 
 local function CalculateHealthFactor(value, isHighHealth)
@@ -24,6 +43,8 @@ end
 GameTooltipStatusBar.capNumericDisplay = true
 GameTooltipStatusBar.forceShow = true
 GameTooltipStatusBar.lockShow = 0
+GameTooltipStatusBar:SetHeight(STATUSBAR_WIDTH)
+GameTooltipStatusBar:SetStatusBarTexture(STATUSBAR_TEXTURE)
 GameTooltipStatusBar:HookScript("OnValueChanged", function(self, value)
     self:SetStatusBarColor(0, 1, 0)
 
@@ -43,14 +64,16 @@ GameTooltipStatusBar:HookScript("OnValueChanged", function(self, value)
 
     local textString = self.TextString
 
-    if(textString) then
+    if textString then
         if value == 0 then
             self.TextString:Hide()
+            self.Background:Hide()
         else
             if unit then
                 value, max = UnitHealth(unit), UnitHealthMax(unit)
             end
-            TextStatusBar.UpdateTextStringWithValues(self, textString, value, 0, max)
+            self.TextStatusBar.UpdateTextStringWithValues(self, textString, value, 0, max)
+            self.Background:Show()
         end
     end
 
