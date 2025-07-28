@@ -1,9 +1,10 @@
 local GetDisplayedItem = TooltipUtil and TooltipUtil.GetDisplayedItem
 local GetItemInfo = GetItemInfo
+local RequestLoadItemDataByID = C_Item and C_Item.RequestLoadItemDataByID
 
 local _G = _G
 
-local EXPAC_LABEL = HIGHLIGHT_FONT_COLOR:WrapTextInColorCode(SOURCE) .. " %s"
+local EXPAC_LABEL = HIGHLIGHT_FONT_COLOR:WrapTextInColorCode("Expansion:") .. " %s"
 
 local LINK_PATTERN = ":(%w+)"
 
@@ -17,6 +18,9 @@ do
             local expacID = select(15, GetItemInfo(itemID))
             if expacID then
                 ITEMS_CACHE[itemID] = _G["EXPANSION_NAME" .. expacID]
+                if GameTooltip:IsShown() then
+                    GameTooltip:RefreshData()
+                end
             end
         end
     end)
@@ -37,6 +41,10 @@ TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, function(tool
     end
 
     local itemExpacSourceName = ITEMS_CACHE[itemID]
+
+    if not itemExpacSourceName and itemID and RequestLoadItemDataByID then
+        RequestLoadItemDataByID(itemID)
+    end
 
     if itemExpacSourceName then
         tooltip:AddLine(" ")
