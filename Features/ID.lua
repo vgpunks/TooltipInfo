@@ -4,8 +4,6 @@ local GameTooltip = GameTooltip
 local BattlePetTooltip = BattlePetTooltip
 local GetAuraDataByIndex = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex
 local GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
-local StaticPopup_Visible = StaticPopup_Visible
-local StaticPopup_Show = StaticPopup_Show
 local GetPetInfoByPetID = C_PetJournal.GetPetInfoByPetID
 
 local _G = _G
@@ -25,32 +23,8 @@ local ID_FORMAT = "|cffca3c3c<%s>|r %s"
 
 local LINK_PATTERN = ":(%w+)"
 
-local Info = {}
-do
-    local frame = CreateFrame("Frame")
-    frame:RegisterEvent("MODIFIER_STATE_CHANGED")
-    frame:SetScript("OnEvent", function(_, _, key, down)
-        if StaticPopup_Visible("TOOLTIPINFO_COPY_ID") then return end
-        if key:find("ALT") and down == 1 and Info.id then
-            StaticPopup_Show("TOOLTIPINFO_COPY_ID", Info.label, nil, Info)
-        end
-    end)
-
-    hooksecurefunc(GameTooltip, "Hide", function()
-        Info.id = nil
-    end)
-
-    function Info:Add(label, id)
-        if label and id then
-            self.label = label
-            self.id = id
-        end
-    end
-end
-
 local function AddIDLine(label, id, tooltip, refresh)
     if label and id and tooltip then
-        Info:Add(label, id)
         id = ID_FORMAT:format(ID, id)
         tooltip:AddLine(id)
         if refresh then
